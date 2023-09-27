@@ -49,11 +49,7 @@ int main() {
         return 1;
     }
 
-    // Cabeçalho (se houver)
-    char status;
-    fread(&status, sizeof(char), 1, entrada);
-    fwrite(&status, sizeof(char), 1, saida);
-
+    
     // Leitura e escrita dos registros
     while (!feof(entrada)) {
         Dados registro;
