@@ -22,7 +22,7 @@ typedef struct Dados {
 
 
 void lerRegistro(FILE *arquivo, Dados *registro) {
-    char linha[TAM_REGISTRO];
+   char linha[TAM_REGISTRO];
 
     // Descarta a primeira linha
     if (fgets(linha, sizeof(linha), arquivo) == NULL) {
@@ -71,12 +71,16 @@ void imprimirRegistro(Dados *registro) {
 
 
 void escreverRegistro(FILE *arquivo, Dados *registro) {
+    int tamDestino = registro->tecDestino.tamString;
+    int tamOrigem = registro->tecOrigem.tamString;
     fwrite(&registro->removido, sizeof(char), 1, arquivo);
-    fwrite(registro->tecOrigem.nomeString, sizeof(char), TAM_STRING_VARIAVEL, arquivo);
     fwrite(&registro->grupo, sizeof(int), 1, arquivo);
     fwrite(&registro->pop, sizeof(int), 1, arquivo);
-    fwrite(registro->tecDestino.nomeString, sizeof(char), TAM_STRING_VARIAVEL, arquivo);
     fwrite(&registro->peso, sizeof(int), 1, arquivo);
+    fwrite(&registro->tecOrigem.tamString, sizeof(int), 1, arquivo);
+    fwrite(registro->tecOrigem.nomeString, sizeof(char), tamOrigem, arquivo);
+    fwrite(&registro->tecDestino.tamString, sizeof(int), 1, arquivo);
+    fwrite(registro->tecDestino.nomeString, sizeof(char), tamDestino, arquivo);
 }
 
 int main() {
@@ -87,7 +91,7 @@ int main() {
         printf("Erro ao abrir os arquivos.\n");
         return 1;
     }
-
+    fscanf(entrada, "%*[^\n]\n");
     // Leitura e escrita dos registros
     while (!feof(entrada)) {
         Dados registro;
