@@ -1,54 +1,22 @@
+#include "../include/dados.h"
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 
-#define TAM_CAMPOS_FIXOS 21
-#define TAM_REGISTRO 76
-#define TAM_STRING_VARIAVEL (TAM_REGISTRO - TAM_CAMPOS_FIXOS)
-
-typedef struct CampoVariavel{
-    int tamString;
-    char nomeString[TAM_STRING_VARIAVEL];
-}CampoVariavel;
-
-typedef struct Dados {
-    char removido;
-    int grupo;
-    int pop;
-    int peso;
-    CampoVariavel tecOrigem;
-    CampoVariavel tecDestino;
-} Dados;   
-
-typedef struct Header{
-    char status;
-    int proxRRN;
-    int nroTecnologias;
-    int nroParesTecnologias;
-}Header;
-
-typedef struct Tecnologia{
-    char nome[TAM_STRING_VARIAVEL];
-    int contagem;
-}Tecnologia;
-
-void adicionarTecnologia(Tecnologia tecnologias[], int *numTecnologias, char *nomeTecnologias){
-    for (int i = 0; i < *numTecnologias; i++)
-    {
-        if(strcmp(tecnologias[i].nome, nomeTecnologias) == 0){
+void adicionarTecnologia(Tecnologia tecnologias[], int *numTecnologias, char *nomeTecnologias) {
+    for (int i = 0; i < *numTecnologias; i++) {
+        if (strcmp(tecnologias[i].nome, nomeTecnologias) == 0) {
             tecnologias[i].contagem++;
             return;
-        
-    }
+        }
     }
     strcpy(tecnologias[*numTecnologias].nome, nomeTecnologias);
     tecnologias[*numTecnologias].contagem = 1;
     (*numTecnologias)++;
-        
 }
 
 void lerRegistro(FILE *arquivo, Dados *registro) {
-   char linha[TAM_REGISTRO];
+    
+    char linha[TAM_REGISTRO];
 
     if (fgets(linha, sizeof(linha), arquivo) == NULL) {
         // Se não foi possível ler a primeira linha, retorna
@@ -87,24 +55,25 @@ void lerRegistro(FILE *arquivo, Dados *registro) {
     // Lê o campo peso
     token = strtok(NULL, ",");
     sscanf(token, "%d", &registro->peso);
+
 }
 
-void inicializarHeader(Header *header){
+void inicializarHeader(Header *header) {
     header->status = '0';
     header->proxRRN = 0;
     header->nroTecnologias = 0; 
     header->nroParesTecnologias = 0;
 }
 
-void atualizarHeader(FILE *arquivo, Header *header){
+void atualizarHeader(FILE *arquivo, Header *header) {
     fwrite(&header->status, sizeof(char), 1, arquivo);
     fwrite(&header->proxRRN, sizeof(int), 1, arquivo);
     fwrite(&header->nroTecnologias, sizeof(int), 1, arquivo);
     fwrite(&header->nroParesTecnologias, sizeof(int), 1, arquivo);
 }
-void imprimirRegistroNaTela(Dados *registro) {
 
-    printf("| %.*s | %d | %d | %.*s | %d |\n",
+void imprimirRegistroNaTela(Dados *registro) {
+      printf("| %.*s | %d | %d | %.*s | %d |\n",
         registro->tecOrigem.tamString,
         registro->tecOrigem.nomeString,
         registro->grupo,
@@ -123,7 +92,7 @@ void preencherLixo(FILE *arquivo, Dados *registro) {
     }
 }
 
-void escreverRegistro(FILE *arquivo, Dados *registro, Header *header,  Tecnologia tecOrigem[], int *numTecOrigem,Tecnologia tecDestino[], int *numTecDestino) {
+void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia tecOrigem[], int *numTecOrigem, Tecnologia tecDestino[], int *numTecDestino) {
     int tamDestino = registro->tecDestino.tamString;
     int tamOrigem = registro->tecOrigem.tamString;
 
@@ -147,44 +116,13 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header,  Tecnologi
 
 void imprimirTecnologiasUnicas(Tecnologia tecOrigem[], int numTecOrigem, Tecnologia tecDestino[], int numTecDestino) {
     printf("Tecnologias Origem Unicas:\n");
+
     for (int i = 0; i < numTecOrigem; i++) {
         printf("%s: %d\n", tecOrigem[i].nome, tecOrigem[i].contagem);
     }
+
     printf("Tecnologias Destino Unicas:\n");
     for (int i = 0; i < numTecDestino; i++) {
         printf("%s: %d\n", tecDestino[i].nome, tecDestino[i].contagem);
     }
-}
-
-
-int main() {
-    FILE *entrada = fopen("dados1.csv", "r");
-    FILE *saida = fopen("saida.bin", "wb");
-    Header header;
-    Tecnologia tecOrigem[100];
-    int numTecOrigem = 0;
-
-    Tecnologia tecDestino[100];
-    int numTecDestino = 0;
-
-    if (entrada == NULL || saida == NULL) {
-        printf("Erro ao abrir os arquivos.\n");
-        return 1;
-    }
-    fscanf(entrada, "%*[^\n]\n");
-    // Leitura e escrita dos registros
-    while (!feof(entrada)) {
-        Dados registro;
-        inicializarHeader(&header);
-        lerRegistro(entrada, &registro);
-        if (registro.removido != '1') {
-            escreverRegistro(saida, &registro, &header, tecOrigem, &numTecOrigem, tecDestino, &numTecDestino); // Escreve o registro no arquivo de saída
-            //imprimirRegistroNaTela(&registro); // Imprime o registro na tabela
-            imprimirTecnologiasUnicas(tecOrigem, numTecOrigem, tecDestino, numTecDestino);
-        }
-    }
-    fclose(entrada);
-    fclose(saida);
-    //binarioNaTela("saida.bin");
-    return 0;
 }
