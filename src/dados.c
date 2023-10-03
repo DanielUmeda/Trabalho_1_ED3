@@ -5,15 +5,18 @@
 void adicionarTecnologia(Tecnologia tecnologias[], int *numTecnologias, char *nomeTecnologias, Header *header) {
     for (int i = 0; i < *numTecnologias; i++) {
         if (strcmp(tecnologias[i].nome, nomeTecnologias) == 0) {
-            tecnologias[i].contagem++;
             return;
         }
     }
     strcpy(tecnologias[*numTecnologias].nome, nomeTecnologias);
     tecnologias[*numTecnologias].contagem = 1;
     (*numTecnologias)++;
-    header->nroTecnologias = *numTecnologias;
 
+}
+void fecharArquivo(FILE *arquivo, Header *header){
+    header->status = '1';
+    atualizarHeader(arquivo, header);
+    fclose(arquivo);
 }
 
 void lerRegistro(FILE *arquivo, Dados *registro) {
@@ -104,14 +107,20 @@ void preencherLixo(FILE *arquivo, Dados *registro) {
     }
 }
 
-void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia tecTotal[], int *numTecTotal) {
+void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia tecTotal[], int *numTecTotal, Tecnologia tecPar[], int *numTecPar) {
     int tamDestino = registro->tecDestino.tamString;
     int tamOrigem = registro->tecOrigem.tamString;
 
+    char strAux[100];
+    strcpy(strAux, registro->tecOrigem.nomeString);
+    strcat(strAux, registro->tecDestino.nomeString);
+
     adicionarTecnologia(tecTotal, numTecTotal, registro->tecDestino.nomeString, header);
     adicionarTecnologia(tecTotal, numTecTotal, registro->tecOrigem.nomeString, header);
-    printf("%d ", header->nroTecnologias);
+    adicionarTecnologia(tecPar, numTecPar, strAux, header);
  
+    header->nroTecnologias = *numTecTotal;
+    header->nroParesTecnologias = *numTecPar;
     atualizarHeader(arquivo, header);
     fwrite(&registro->removido, sizeof(char), 1, arquivo);
     fwrite(&registro->grupo, sizeof(int), 1, arquivo);
@@ -126,7 +135,8 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia
     preencherLixo(arquivo, registro);
 }
 
-void imprimirTecnologiasUnicas(int numTecTotal) {
+void imprimirTecnologiasUnicas(int numTecTotal, int numTecPar) {
 
     printf("Qtde total de tecnologias diferentes: %d",  numTecTotal);
+    printf("Qtde total de tecnologias diferentes: %d",  numTecPar);
 }

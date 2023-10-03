@@ -2,11 +2,14 @@
 #include "../include/dados.h"
 
 int main() {
+    Header header;
     FILE *entrada = fopen("dados1.csv", "r");
     FILE *saida = fopen("saida.bin", "wb");
-    Header header;
     Tecnologia tecTotal[500];
+    Tecnologia tecPar[500];
+
     int numTecTotal = 0;
+    int numTecPar = 0;
     inicializarHeader(&header);
   
 
@@ -21,13 +24,13 @@ int main() {
         Dados registro;
         lerRegistro(entrada, &registro);
         if (registro.removido != '1') {
-            escreverRegistro(saida, &registro, &header, tecTotal, &numTecTotal);
+            escreverRegistro(saida, &registro, &header, tecTotal, &numTecTotal, tecPar, &numTecPar);
         }
     }
-            imprimirTecnologiasUnicas(numTecTotal);
+            imprimirTecnologiasUnicas(numTecTotal, numTecPar);
 
     fclose(entrada);
-    fclose(saida);
-
+    header.status = '1';
+    fecharArquivo(saida, &header);
     return 0;
 }
