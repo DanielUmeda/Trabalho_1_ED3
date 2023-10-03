@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void adicionarTecnologia(Tecnologia tecnologias[], int *numTecnologias, char *nomeTecnologias) {
+void adicionarTecnologia(Tecnologia tecnologias[], int *numTecnologias, char *nomeTecnologias, Header *header) {
     for (int i = 0; i < *numTecnologias; i++) {
         if (strcmp(tecnologias[i].nome, nomeTecnologias) == 0) {
             tecnologias[i].contagem++;
@@ -12,6 +12,8 @@ void adicionarTecnologia(Tecnologia tecnologias[], int *numTecnologias, char *no
     strcpy(tecnologias[*numTecnologias].nome, nomeTecnologias);
     tecnologias[*numTecnologias].contagem = 1;
     (*numTecnologias)++;
+    header->nroTecnologias = *numTecnologias;
+
 }
 
 void lerRegistro(FILE *arquivo, Dados *registro) {
@@ -66,10 +68,20 @@ void inicializarHeader(Header *header) {
 }
 
 void atualizarHeader(FILE *arquivo, Header *header) {
+   long posicaoAtual = ftell(arquivo);
+
+    // Move o ponteiro para o início do arquivo
+    fseek(arquivo, 0, SEEK_SET);
+
+    // Escreve os dados do cabeçalho
     fwrite(&header->status, sizeof(char), 1, arquivo);
     fwrite(&header->proxRRN, sizeof(int), 1, arquivo);
     fwrite(&header->nroTecnologias, sizeof(int), 1, arquivo);
     fwrite(&header->nroParesTecnologias, sizeof(int), 1, arquivo);
+
+    // Move o ponteiro de volta para a posição original
+    fseek(arquivo, posicaoAtual, SEEK_SET);
+    
 }
 
 void imprimirRegistroNaTela(Dados *registro) {
@@ -92,14 +104,14 @@ void preencherLixo(FILE *arquivo, Dados *registro) {
     }
 }
 
-void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia tecOrigem[], int *numTecOrigem, Tecnologia tecDestino[], int *numTecDestino) {
+void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia tecTotal[], int *numTecTotal) {
     int tamDestino = registro->tecDestino.tamString;
     int tamOrigem = registro->tecOrigem.tamString;
 
-    
-    adicionarTecnologia(tecDestino, numTecDestino, registro->tecDestino.nomeString);
-    adicionarTecnologia(tecOrigem, numTecOrigem, registro->tecOrigem.nomeString);
-            
+    adicionarTecnologia(tecTotal, numTecTotal, registro->tecDestino.nomeString, header);
+    adicionarTecnologia(tecTotal, numTecTotal, registro->tecOrigem.nomeString, header);
+    printf("%d ", header->nroTecnologias);
+ 
     atualizarHeader(arquivo, header);
     fwrite(&registro->removido, sizeof(char), 1, arquivo);
     fwrite(&registro->grupo, sizeof(int), 1, arquivo);
@@ -114,15 +126,7 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia
     preencherLixo(arquivo, registro);
 }
 
-void imprimirTecnologiasUnicas(Tecnologia tecOrigem[], int numTecOrigem, Tecnologia tecDestino[], int numTecDestino) {
-    printf("Tecnologias Origem Unicas:\n");
+void imprimirTecnologiasUnicas(int numTecTotal) {
 
-    for (int i = 0; i < numTecOrigem; i++) {
-        printf("%s: %d\n", tecOrigem[i].nome, tecOrigem[i].contagem);
-    }
-
-    printf("Tecnologias Destino Unicas:\n");
-    for (int i = 0; i < numTecDestino; i++) {
-        printf("%s: %d\n", tecDestino[i].nome, tecDestino[i].contagem);
-    }
+    printf("Qtde total de tecnologias diferentes: %d",  numTecTotal);
 }

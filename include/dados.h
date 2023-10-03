@@ -28,13 +28,15 @@ typedef struct Header {
     int nroParesTecnologias;
 } Header;
 
-void adicionarTecnologia(Tecnologia tecnologias[], int *numTecnologias, char *nomeTecnologias);
+void adicionarTecnologia(Tecnologia tecnologias[], int *numTecnologias, char *nomeTecnologias, Header *header);
 void lerRegistro(FILE *arquivo, Dados *registro);
 void inicializarHeader(Header *header);
 void atualizarHeader(FILE *arquivo, Header *header);
 void imprimirRegistroNaTela(Dados *registro);
 void preencherLixo(FILE *arquivo, Dados *registro);
-void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia tecOrigem[], int *numTecOrigem, Tecnologia tecDestino[], int *numTecDestino);
-void imprimirTecnologiasUnicas(Tecnologia tecOrigem[], int numTecOrigem, Tecnologia tecDestino[], int numTecDestino);
+void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia tecTotal[],int *numTecTotal);
+void imprimirTecnologiasUnicas(int numTecTotal);
+
+
 
 #endif

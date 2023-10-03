@@ -5,10 +5,10 @@ int main() {
     FILE *entrada = fopen("dados1.csv", "r");
     FILE *saida = fopen("saida.bin", "wb");
     Header header;
-    Tecnologia tecOrigem[100];
-    int numTecOrigem = 0;
-    Tecnologia tecDestino[100];
-    int numTecDestino = 0;
+    Tecnologia tecTotal[500];
+    int numTecTotal = 0;
+    inicializarHeader(&header);
+  
 
     if (entrada == NULL || saida == NULL) {
         printf("Erro ao abrir os arquivos.\n");
@@ -19,13 +19,12 @@ int main() {
 
     while (!feof(entrada)) {
         Dados registro;
-        inicializarHeader(&header);
         lerRegistro(entrada, &registro);
         if (registro.removido != '1') {
-            escreverRegistro(saida, &registro, &header, tecOrigem, &numTecOrigem, tecDestino, &numTecDestino);
-            imprimirTecnologiasUnicas(tecOrigem, numTecOrigem, tecDestino, numTecDestino);
+            escreverRegistro(saida, &registro, &header, tecTotal, &numTecTotal);
         }
     }
+            imprimirTecnologiasUnicas(numTecTotal);
 
     fclose(entrada);
     fclose(saida);
