@@ -118,7 +118,8 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia
     adicionarTecnologia(tecTotal, numTecTotal, registro->tecDestino.nomeString, header);
     adicionarTecnologia(tecTotal, numTecTotal, registro->tecOrigem.nomeString, header);
     adicionarTecnologia(tecPar, numTecPar, strAux, header);
- 
+    
+    header->proxRRN += 1;
     header->nroTecnologias = *numTecTotal;
     header->nroParesTecnologias = *numTecPar;
     atualizarHeader(arquivo, header);
