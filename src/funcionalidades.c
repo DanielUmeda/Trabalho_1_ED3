@@ -38,3 +38,14 @@ void func1(FILE *entrada, FILE *saida){
 
 }
 
+void func2(FILE *saida){
+
+        //pula o cabecalho do arquivo
+        fseek(saida, 14, SEEK_SET);
+
+        while(!feof(saida)){
+            Dados registroSaida;
+            lerSaida(saida, &registroSaida);  
+        }
+
+}

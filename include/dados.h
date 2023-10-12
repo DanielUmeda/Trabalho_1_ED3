@@ -37,7 +37,7 @@ void imprimirRegistroNaTela(Dados *registro);
 void preencherLixo(FILE *arquivo, Dados *registro);
 void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia tecTotal[],int *numTecTotal, Tecnologia tecPar[], int *numTecPar);
 void imprimirTecnologiasUnicas(int numTecTotal, int numTecPar);
-
+void lerSaida (FILE *saida, Dados *out);
 
 
 #endif

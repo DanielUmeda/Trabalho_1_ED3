@@ -141,3 +141,32 @@ void imprimirTecnologiasUnicas(int numTecTotal, int numTecPar) {
     printf("Qtde total de tecnologias diferentes: %d",  numTecTotal);
     printf("Qtde total de tecnologias diferentes: %d",  numTecPar);
 }
+
+void lerSaida(FILE *saida, Dados *out){
+    
+
+    while(fread(&out->removido, sizeof(char), 1, saida) == 0){
+        fread(&out->grupo, sizeof(int), 1, saida);
+        fread(&out->pop, sizeof(int), 1, saida);
+        fread(&out->peso, sizeof(int), 1, saida);
+
+        fread(&out->tecOrigem.tamString, sizeof(int), 1, saida);
+        fread(&out->tecOrigem.nomeString, sizeof(char), out->tecOrigem.tamString, saida);
+
+        fread(&out->tecDestino.tamString, sizeof(int), 1, saida);
+        fread(&out->tecDestino.nomeString, sizeof(char), out->tecDestino.tamString, saida);
+
+
+        int tam_lixo = TAM_REGISTRO - (5 * sizeof(int) + out->tecOrigem.tamString + out->tecDestino.tamString);
+
+        fseek(saida, tam_lixo, SEEK_CUR);
+
+        printf("%s, ", out->tecOrigem.nomeString);
+        printf("%d, ", out->grupo);
+        printf("%d, ", out->pop);
+        printf("%s, ", out->tecDestino.nomeString);
+        printf("%d, ", out->peso);
+      
+        
+    }
+}
