@@ -40,12 +40,72 @@ void func1(FILE *entrada, FILE *saida){
 
 void func2(FILE *saida){
 
-        //pula o cabecalho do arquivo
-        fseek(saida, 14, SEEK_SET);
+        if (saida == NULL) {
+        printf("Erro ao abrir os arquivos.\n");
+        return;
+    }
 
-        while(!feof(saida)){
-            Dados registroSaida;
-            lerSaida(saida, &registroSaida);  
+    //pula o cabecalho do arquivo
+    fseek(saida, 13, SEEK_SET);
+    Dados out;
+
+    while(fread(&out.removido, sizeof(char), 1, saida)){
+        if (out.removido == '0')
+        {
+        fread(&out.grupo, sizeof(int), 1, saida);
+        fread(&out.pop, sizeof(int), 1, saida);
+        fread(&out.peso, sizeof(int), 1, saida);
+
+        fread(&out.tecOrigem.tamString, sizeof(int), 1, saida);
+        char buffer1[out.tecOrigem.tamString];
+        fread(buffer1, sizeof(char), out.tecOrigem.tamString, saida);
+        strcpy(out.tecOrigem.nomeString, buffer1);
+
+
+        fread(&out.tecDestino.tamString, sizeof(int), 1, saida);
+        char buffer[out.tecDestino.tamString];
+        fread(buffer, sizeof(char), out.tecDestino.tamString, saida);
+        strcpy(out.tecDestino.nomeString, buffer);
+        imprimirRegistrosNaTela(&out);
+        }     
+    }
+    fclose(saida);
+}
+
+void func4(FILE *saida, int rrn){
+
+    if (saida == NULL) {
+        printf("Erro ao abrir os arquivos.\n");
+        return;
+    }
+    int proxRRN = 0;
+    //pula o cabecalho do arquivo
+    fseek(saida, 13, SEEK_SET);
+    Dados out;
+    while(fread(&out.removido, sizeof(char), 1, saida)){
+        if (out.removido == '0')
+        {
+        
+        fread(&out.grupo, sizeof(int), 1, saida);
+        fread(&out.pop, sizeof(int), 1, saida);
+        fread(&out.peso, sizeof(int), 1, saida);
+
+        fread(&out.tecOrigem.tamString, sizeof(int), 1, saida);
+        char buffer1[out.tecOrigem.tamString];
+        fread(buffer1, sizeof(char), out.tecOrigem.tamString, saida);
+        strcpy(out.tecOrigem.nomeString, buffer1);
+
+
+        fread(&out.tecDestino.tamString, sizeof(int), 1, saida);
+        char buffer[out.tecDestino.tamString];
+        fread(buffer, sizeof(char), out.tecDestino.tamString, saida);
+        strcpy(out.tecDestino.nomeString, buffer);
+
+        if(proxRRN == rrn){
+        imprimirRegistrosNaTela(&out);
         }
-
+        proxRRN++;
+        }     
+    }
+    fclose(saida);
 }

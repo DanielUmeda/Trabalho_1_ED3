@@ -87,15 +87,51 @@ void atualizarHeader(FILE *arquivo, Header *header) {
     
 }
 
-void imprimirRegistroNaTela(Dados *registro) {
-      printf("| %.*s | %d | %d | %.*s | %d |\n",
+void imprimirRegistrosNaTela(Dados *registro) {
+
+    //a funcao verifica os 2 possiveis casos para cada campo: nulo/nao nulo
+
+    if(registro->tecOrigem.tamString == 0){
+        printf("NULO, ");
+    }
+    else{
+        printf("%.*s, ",
         registro->tecOrigem.tamString,
-        registro->tecOrigem.nomeString,
-        registro->grupo,
-        registro->pop,
+        registro->tecOrigem.nomeString
+        );
+    }
+   
+    
+    if(registro->grupo == -1){
+        printf("NULO, ");
+    }
+    else{
+        printf("%d, ", registro->grupo);
+    }
+
+    if(registro->pop == -1){
+        printf("NULO, ");
+    }
+    else{
+        printf("%d, ", registro->pop);
+    }
+    if(registro->tecOrigem.tamString == 0){
+        printf("NULO, ");
+    }
+    else{
+        printf("%.*s, ",
         registro->tecDestino.tamString,
-        registro->tecDestino.nomeString,
-        registro->peso);
+        registro->tecDestino.nomeString
+        );
+    }
+
+    if(registro->peso == -1){
+        printf("NULO, ");
+    }
+    else{
+        printf("%d\n", registro->peso);
+    }
+
 }
 
 void preencherLixo(FILE *arquivo, Dados *registro) {
@@ -142,31 +178,4 @@ void imprimirTecnologiasUnicas(int numTecTotal, int numTecPar) {
     printf("Qtde total de tecnologias diferentes: %d",  numTecPar);
 }
 
-void lerSaida(FILE *saida, Dados *out){
-    
 
-    while(fread(&out->removido, sizeof(char), 1, saida) == 0){
-        fread(&out->grupo, sizeof(int), 1, saida);
-        fread(&out->pop, sizeof(int), 1, saida);
-        fread(&out->peso, sizeof(int), 1, saida);
-
-        fread(&out->tecOrigem.tamString, sizeof(int), 1, saida);
-        fread(&out->tecOrigem.nomeString, sizeof(char), out->tecOrigem.tamString, saida);
-
-        fread(&out->tecDestino.tamString, sizeof(int), 1, saida);
-        fread(&out->tecDestino.nomeString, sizeof(char), out->tecDestino.tamString, saida);
-
-
-        int tam_lixo = TAM_REGISTRO - (5 * sizeof(int) + out->tecOrigem.tamString + out->tecDestino.tamString);
-
-        fseek(saida, tam_lixo, SEEK_CUR);
-
-        printf("%s, ", out->tecOrigem.nomeString);
-        printf("%d, ", out->grupo);
-        printf("%d, ", out->pop);
-        printf("%s, ", out->tecDestino.nomeString);
-        printf("%d, ", out->peso);
-      
-        
-    }
-}

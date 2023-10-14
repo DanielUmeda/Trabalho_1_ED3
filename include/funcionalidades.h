@@ -6,6 +6,7 @@
 
 void func1(FILE *entrada, FILE *saida);
 void func2(FILE *saida);
+void func4(FILE *saida, int rrn);
 
 
 #endif

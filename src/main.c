@@ -1,3 +1,14 @@
+/*
+
+
+JOAO MARCELO FERREIRA BATTAGLINI - 13835472
+DANIEL UMEDA KUHN - 13676541
+
+
+
+*/
+
+
 #include <stdio.h>
 #include "../include/dados.h"
 #include "../include/funcionalidades.h"
@@ -8,8 +19,8 @@ int main() {
     int funcionalidade;
     char input[20];
     char output[20];
-
-
+    char teste[20];
+    int rrn = 0;
     scanf("%d", &funcionalidade);
 
     switch (funcionalidade)
@@ -24,13 +35,22 @@ int main() {
         break;
     case (2):
         //le o arquivo binario
-        scanf("%s", output);
+        scanf("%s", teste);
 
-        FILE *out = fopen(output, "rb+");
+        FILE *out = fopen(teste, "rb+");
         
         func2(out);
         
-        break;
+        break; 
+    case (4):
+        //le o arquivo binario
+        scanf("%s %d", teste, &rrn);
+
+        FILE *file4 = fopen(teste, "rb+");
+        
+        func4(file4, rrn);
+        
+        break; 
     default:
         break;
     }
