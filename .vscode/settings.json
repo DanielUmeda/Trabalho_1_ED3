@@ -3,5 +3,5 @@
         "tecnologia.h": "c",
         "stdio.h": "c"
     },
-    "C_Cpp.errorSquiggles": "enabled"
+    "C_Cpp.errorSquiggles": "disabled"
 }

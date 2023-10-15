@@ -72,6 +72,14 @@ void func2(FILE *saida){
     fclose(saida);
 }
 
+void func3(FILE *entrada){
+    
+    if (entrada == NULL) {
+        printf("Erro ao abrir os arquivos.\n");
+        return;
+    }
+}
+
 void func4(FILE *saida, int rrn){
 
     if (saida == NULL) {

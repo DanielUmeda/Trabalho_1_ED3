@@ -42,6 +42,11 @@ int main() {
         func2(out);
         
         break; 
+    case (3):
+        
+        FILE *file3 = fopen(teste, "r");
+        func3(file3); 
+
     case (4):
         //le o arquivo binario
         scanf("%s %d", teste, &rrn);
