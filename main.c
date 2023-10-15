@@ -10,8 +10,8 @@ DANIEL UMEDA KUHN - 13676541
 
 
 #include <stdio.h>
-#include "../include/dados.h"
-#include "../include/funcionalidades.h"
+#include "dados.h"
+#include "funcionalidades.h"
 
 
 int main() {

@@ -1,3 +1,3 @@
-#include "../include/tecnologia.h"
+#include "tecnologia.h"
 
 // Implementação das funções relacionadas a tecnologia, se necessário

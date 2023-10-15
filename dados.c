@@ -1,4 +1,4 @@
-#include "../include/dados.h"
+#include "dados.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -18,49 +18,92 @@ void fecharArquivo(FILE *arquivo, Header *header){
     atualizarHeader(arquivo, header);
     fclose(arquivo);
 }
-
 void lerRegistro(FILE *arquivo, Dados *registro) {
-    
     char linha[TAM_REGISTRO];
 
     if (fgets(linha, sizeof(linha), arquivo) == NULL) {
         // Se não foi possível ler a primeira linha, retorna
         return;
     }
-    
-    char *token;
-    token = strtok(linha, ",");
+
+    char *token = linha;
+    char *delimitadorCampos = ","; 
     registro->removido = '0';
+
     // Lê o campo tecOrigem
-    if(token != NULL){
-        registro->tecOrigem.tamString = strlen(token);
-        strcpy(registro->tecOrigem.nomeString, token);
+    char *endToken = strpbrk(token, delimitadorCampos); // Lê a string até encontrar uma vírgula 
+    if (endToken != NULL) {
+        if (endToken == token) {
+            strcpy(registro->tecOrigem.nomeString, "NULO");
+            //registro->tecOrigem.tamString = -1; // Campo nulo
+        } else {
+            *endToken = '\0';
+            registro->tecOrigem.tamString = strlen(token);
+            strcpy(registro->tecOrigem.nomeString, token);
+        }
+        token = endToken + 1;
+    } else {
+        registro->tecOrigem.tamString = 0; // Campo nulo
     }
-    else{
-        registro->tecOrigem.tamString = 0;
-    }
+
     // Lê o campo grupo
-    token = strtok(NULL, ",");
-    sscanf(token, "%d", &registro->grupo);
-    
-    // Lê o campo pop
-    token = strtok(NULL, ",");
-    sscanf(token, "%d", &registro->pop);
-    
-    // Lê o campo tecDestino
-    token = strtok(NULL, ",");
-    if(token != NULL){
-        registro->tecDestino.tamString = strlen(token);
-        strcpy(registro->tecDestino.nomeString, token);
+    endToken = strpbrk(token, delimitadorCampos);
+    if (endToken != NULL) {
+        if (endToken == token) {
+            registro->grupo = -1; // Campo nulo
+        } else {
+            *endToken = '\0';
+            sscanf(token, "%d", &registro->grupo);
+        }
+        token = endToken + 1;
+    } else {
+        registro->grupo = -1; // Campo nulo
     }
-    else{
-        registro->tecDestino.tamString = 0;
+
+    // Lê o campo pop
+    endToken = strpbrk(token, delimitadorCampos);
+    if (endToken != NULL) {
+        if (endToken == token) {
+            registro->pop = -1; // Campo nulo
+        } else {
+            *endToken = '\0';
+            sscanf(token, "%d", &registro->pop);
+        }
+        token = endToken + 1;
+    } else {
+        registro->pop = -1; // Campo nulo
+    }
+
+    // Lê o campo tecDestino
+    endToken = strpbrk(token, delimitadorCampos);
+    if (endToken != NULL) {
+        if (endToken == token) {
+            strcpy(registro->tecDestino.nomeString, "NULO");
+            //registro->tecDestino.tamString = -1; // Campo nulo
+        } else {
+            *endToken = '\0';
+            registro->tecDestino.tamString = strlen(token);
+            strcpy(registro->tecDestino.nomeString, token);
+        }
+        token = endToken + 1;
+    } else {
+        registro->tecDestino.tamString = 0; // Campo nulo
     }
 
     // Lê o campo peso
-    token = strtok(NULL, ",");
-    sscanf(token, "%d", &registro->peso);
-
+    char *delimitadorUltCampo = "\n";
+    endToken = strpbrk(token, delimitadorUltCampo);
+    if (endToken != NULL) {
+        if (endToken == token) {
+            registro->peso = -1; // Campo nulo
+        } else {
+            *endToken = '\0';
+            sscanf(token, "%d", &registro->peso);
+        }
+        token = endToken + 1;
+    } else {
+        registro->peso = -1; // Campo nulo
+    }
 }
 
 void inicializarHeader(Header *header) {
@@ -126,7 +169,7 @@ void imprimirRegistrosNaTela(Dados *registro) {
     }
 
     if(registro->peso == -1){
-        printf("NULO, ");
+        printf("NULO\n");
     }
     else{
         printf("%d\n", registro->peso);
@@ -144,6 +187,8 @@ void preencherLixo(FILE *arquivo, Dados *registro) {
 }
 
 void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia tecTotal[], int *numTecTotal, Tecnologia tecPar[], int *numTecPar) {
+    
+    
     int tamDestino = registro->tecDestino.tamString;
     int tamOrigem = registro->tecOrigem.tamString;
 
@@ -159,6 +204,7 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia
     header->nroTecnologias = *numTecTotal;
     header->nroParesTecnologias = *numTecPar;
     atualizarHeader(arquivo, header);
+
     fwrite(&registro->removido, sizeof(char), 1, arquivo);
     fwrite(&registro->grupo, sizeof(int), 1, arquivo);
     fwrite(&registro->pop, sizeof(int), 1, arquivo);
@@ -170,12 +216,6 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia
 
     //Com o registro todo preenchido, devemos preencher o restante com $, até que os 76 bytes sejam utilizados
     preencherLixo(arquivo, registro);
-}
-
-void imprimirTecnologiasUnicas(int numTecTotal, int numTecPar) {
-
-    printf("Qtde total de tecnologias diferentes: %d",  numTecTotal);
-    printf("Qtde total de tecnologias diferentes: %d",  numTecPar);
 }
 
 

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include "../include/funcionalidades.h"
-#include "../include/dados.h"
+#include "funcionalidades.h"
+#include "dados.h"
 
 
 void func1(FILE *entrada, FILE *saida){
@@ -21,19 +21,23 @@ void func1(FILE *entrada, FILE *saida){
     }
 
     fscanf(entrada, "%*[^\n]\n");
-
+// Antes de iniciar a escrita de registros, verifique o estado inicial das variáveis
+    fseek(saida, 13, SEEK_SET);
     while (!feof(entrada)) {
         Dados registro;
         lerRegistro(entrada, &registro);
         if (registro.removido != '1') {
+           // Antes de iniciar a escrita de registros, verifique o estado inicial das variáveis
+
             escreverRegistro(saida, &registro, &header, tecTotal, &numTecTotal, tecPar, &numTecPar);
+                //imprimirRegistrosNaTela(&registro);
+
         }
     }
-            imprimirTecnologiasUnicas(numTecTotal, numTecPar);
 
     fclose(entrada);
-    fecharArquivo(saida, &header);
-    header.status = '1';
+    //fecharArquivo(saida, &header);
+    //header.status = '1';
     return;
 
 }
