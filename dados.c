@@ -4,12 +4,11 @@
 
 void adicionarTecnologia(Tecnologia tecnologias[], int *numTecnologias, char *nomeTecnologias, Header *header) {
     for (int i = 0; i < *numTecnologias; i++) {
-        if (strcmp(tecnologias[i].nome, nomeTecnologias) == 0) {
+        if (strcmp(tecnologias[i].nome, nomeTecnologias) == 0 && strcmp(tecnologias[i].nome, "NULO")!=0) {
             return;
         }
     }
     strcpy(tecnologias[*numTecnologias].nome, nomeTecnologias);
-    tecnologias[*numTecnologias].contagem = 1;
     (*numTecnologias)++;
 
 }
@@ -91,7 +90,7 @@ void lerRegistro(FILE *arquivo, Dados *registro) {
     }
 
     // Lê o campo peso
-    char *delimitadorUltCampo = "\n";
+    char *delimitadorUltCampo = "\r\n";
     endToken = strpbrk(token, delimitadorUltCampo);
     if (endToken != NULL) {
         if (endToken == token) {
@@ -158,7 +157,7 @@ void imprimirRegistrosNaTela(Dados *registro) {
     else{
         printf("%d, ", registro->pop);
     }
-    if(registro->tecOrigem.tamString == 0){
+    if(registro->tecDestino.tamString == 0){
         printf("NULO, ");
     }
     else{
@@ -177,11 +176,11 @@ void imprimirRegistrosNaTela(Dados *registro) {
 
 }
 
-void preencherLixo(FILE *arquivo, Dados *registro) {
-    int tamReal = TAM_REGISTRO - registro->tecDestino.tamString - registro->tecOrigem.tamString - TAM_CAMPOS_FIXOS;
+void preencherLixo(FILE *arquivo, Dados *registro, int tamRealRegistro) {
 
+    int tamPreencher = TAM_REGISTRO - tamRealRegistro;
     //enquanto i for menor que o tamanho não preenchido do registro, insere-se 1 '$'
-    for (int i = 0; i < tamReal; i++) {
+    for (int i = 0; i < tamPreencher; i++) {
         fwrite("$", sizeof(char), 1, arquivo);
     }
 }
@@ -191,6 +190,7 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia
     
     int tamDestino = registro->tecDestino.tamString;
     int tamOrigem = registro->tecOrigem.tamString;
+    int tamanhoRealRegistro = TAM_CAMPOS_FIXOS + sizeof(int) * 2 + tamOrigem + tamDestino;
 
     char strAux[100];
     strcpy(strAux, registro->tecOrigem.nomeString);
@@ -215,7 +215,7 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia
     fwrite(registro->tecDestino.nomeString, sizeof(char), tamDestino, arquivo);
 
     //Com o registro todo preenchido, devemos preencher o restante com $, até que os 76 bytes sejam utilizados
-    preencherLixo(arquivo, registro);
+    preencherLixo(arquivo, registro, tamanhoRealRegistro);
 }
 
 

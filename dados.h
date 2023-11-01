@@ -35,7 +35,7 @@ void lerRegistro(FILE *arquivo, Dados *registro);
 void inicializarHeader(Header *header);
 void atualizarHeader(FILE *arquivo, Header *header);
 void imprimirRegistrosNaTela(Dados *registro);
-void preencherLixo(FILE *arquivo, Dados *registro);
+void preencherLixo(FILE *arquivo, Dados *registro, int tamRealReg);
 void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia tecTotal[],int *numTecTotal, Tecnologia tecPar[], int *numTecPar);
 void imprimirTecnologiasUnicas(int numTecTotal, int numTecPar);
 void lerSaida (FILE *saida, Dados *out);
