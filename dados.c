@@ -26,7 +26,7 @@ void lerRegistro(FILE *arquivo, Dados *registro) {
     }
 
     char *token = linha;
-    char *delimitadorCampos = ","; 
+    char *delimitadorCampos = ",";
     registro->removido = '0';
 
     // Lê o campo tecOrigem
@@ -108,12 +108,12 @@ void lerRegistro(FILE *arquivo, Dados *registro) {
 void inicializarHeader(Header *header) {
     header->status = '0';
     header->proxRRN = 0;
-    header->nroTecnologias = 0; 
+    header->nroTecnologias = 0;
     header->nroParesTecnologias = 0;
 }
 
 void atualizarHeader(FILE *arquivo, Header *header) {
-   long posicaoAtual = ftell(arquivo);
+    long posicaoAtual = ftell(arquivo);
 
     // Move o ponteiro para o início do arquivo
     fseek(arquivo, 0, SEEK_SET);
@@ -126,7 +126,7 @@ void atualizarHeader(FILE *arquivo, Header *header) {
 
     // Move o ponteiro de volta para a posição original
     fseek(arquivo, posicaoAtual, SEEK_SET);
-    
+
 }
 
 void imprimirRegistrosNaTela(Dados *registro) {
@@ -138,12 +138,12 @@ void imprimirRegistrosNaTela(Dados *registro) {
     }
     else{
         printf("%.*s, ",
-        registro->tecOrigem.tamString,
-        registro->tecOrigem.nomeString
+               registro->tecOrigem.tamString,
+               registro->tecOrigem.nomeString
         );
     }
-   
-    
+
+
     if(registro->grupo == -1){
         printf("NULO, ");
     }
@@ -162,8 +162,8 @@ void imprimirRegistrosNaTela(Dados *registro) {
     }
     else{
         printf("%.*s, ",
-        registro->tecDestino.tamString,
-        registro->tecDestino.nomeString
+               registro->tecDestino.tamString,
+               registro->tecDestino.nomeString
         );
     }
 
@@ -186,8 +186,8 @@ void preencherLixo(FILE *arquivo, Dados *registro, int tamRealRegistro) {
 }
 
 void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia tecTotal[], int *numTecTotal, Tecnologia tecPar[], int *numTecPar) {
-    
-    
+
+
     int tamDestino = registro->tecDestino.tamString;
     int tamOrigem = registro->tecOrigem.tamString;
     int tamanhoRealRegistro = TAM_CAMPOS_FIXOS + sizeof(int) * 2 + tamOrigem + tamDestino;
@@ -199,7 +199,7 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia
     adicionarTecnologia(tecTotal, numTecTotal, registro->tecDestino.nomeString, header);
     adicionarTecnologia(tecTotal, numTecTotal, registro->tecOrigem.nomeString, header);
     adicionarTecnologia(tecPar, numTecPar, strAux, header);
-    
+
     header->proxRRN += 1;
     header->nroTecnologias = *numTecTotal;
     header->nroParesTecnologias = *numTecPar;
