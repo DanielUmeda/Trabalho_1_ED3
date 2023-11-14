@@ -44,14 +44,6 @@ void func1(FILE *entrada, FILE *saida){
 
 void func2(FILE *saida){
 
-    Header header;
-    fread(&header.status, sizeof(char), 1, saida);
-    if (saida == NULL || header.status == '0') {
-        printf("Falha no processamento do arquivo.");
-        return;
-    }
-
-
     //pula o cabecalho do arquivo
     fseek(saida, 13, SEEK_SET);
     Dados out;
@@ -86,12 +78,7 @@ void func2(FILE *saida){
 
 void func3(FILE *entrada, char *campo, char *busca, Dados *total){
 
-    Header header;
-    fread(&header.status, sizeof(char), 1, entrada);
-    if (entrada == NULL || header.status == '0') {
-        printf("Falha no processamento do arquivo.");
-        return;
-    }
+   
 
     Dados out;
     while(fread(&out.removido, sizeof(char), 1, entrada)){
@@ -113,7 +100,7 @@ void func3(FILE *entrada, char *campo, char *busca, Dados *total){
             strcpy(out.tecDestino.nomeString, buffer);
 
             if (strcmp(campo, "nomeTecnologiaOrigem") == 0) {
-                if (strcmp(busca, out.tecOrigem.nomeString) == 0) {
+                if (strncmp(busca, out.tecOrigem.nomeString, out.tecOrigem.tamString) == 0) {
                     imprimirRegistrosNaTela(&out);
                 }
             }   else if (strcmp(campo, "grupo") == 0) {
@@ -127,7 +114,7 @@ void func3(FILE *entrada, char *campo, char *busca, Dados *total){
                     imprimirRegistrosNaTela(&out);
                 }
             }   else if (strcmp(campo, "nomeTecnologiaDestino") == 0) {
-                if (strcmp(busca, out.tecDestino.nomeString) == 0) {
+                if (strncmp(busca, out.tecDestino.nomeString, out.tecDestino.tamString) == 0) {
                     imprimirRegistrosNaTela(&out);
                 }
             }   else if (strcmp(campo, "peso") == 0) {
@@ -138,7 +125,6 @@ void func3(FILE *entrada, char *campo, char *busca, Dados *total){
             }
         }
     }
-
 }
 
 
@@ -146,12 +132,7 @@ void func3(FILE *entrada, char *campo, char *busca, Dados *total){
 
 void func4(FILE *saida, int rrn){
 
-    Header header;
-    fread(&header.status, sizeof(char), 1, saida);
-    if (saida == NULL || header.status == '0') {
-        printf("Falha no processamento do arquivo.");
-        return;
-    }
+
 
     int proxRRN = 0;
     //pula o cabecalho do arquivo
