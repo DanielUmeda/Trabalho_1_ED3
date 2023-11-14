@@ -7,7 +7,7 @@ EXECUTABLE = programaTrab.exe  # Adicione a extensão .exe para executáveis no 
 all: compile
 
 compile: $(OBJ_FILES)
-	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJ_FILES) -lmsvcrt
+	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJ_FILES)
 
 
 %.o: %.c
