@@ -12,6 +12,7 @@ void adicionarTecnologia(Tecnologia tecnologias[], int *numTecnologias, char *no
     (*numTecnologias)++;
 
 }
+
 void fecharArquivo(FILE *arquivo, Header *header){
     header->status = '1';
     atualizarHeader(arquivo, header);
@@ -217,5 +218,21 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia
     //Com o registro todo preenchido, devemos preencher o restante com $, até que os 76 bytes sejam utilizados
     preencherLixo(arquivo, registro, tamanhoRealRegistro);
 }
+
+// Função para inserir um registro na árvore-B
+void inserirNaArvoreB(FILE *arquivoIndice, DadosArvoreB *registro, CabecalhoArvoreB *cabecalho) {
+    // Implementação da lógica de inserção na árvore-B
+}
+
+// Função para buscar um registro na árvore-B
+void buscarNaArvoreB(FILE *arquivoIndice, char *chave, DadosArvoreB *resultado, CabecalhoArvoreB *cabecalho) {
+    // Implementação da lógica de busca na árvore-B
+}
+
+// Função para atualizar o cabeçalho da árvore-B
+void atualizarCabecalhoArvoreB(FILE *arquivoIndice, CabecalhoArvoreB *cabecalho) {
+    // Implementação da atualização do cabeçalho
+}
+
 
 
