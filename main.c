@@ -72,19 +72,28 @@ int main() {
 
             
 
-            fseek(file3, 0, SEEK_SET);
+          fseek(file3, 0, SEEK_SET);
             fread(&header.status, sizeof(char), 1, file3);
             if (file3 == NULL || header.status == '0') {
                 printf("Falha no processamento do arquivo.");
                 break;
             }
 
-
             for (int i = 0; i < n; i++) {
                 fseek(file3, 13, SEEK_SET);
-                scanf("%s", campo[i]);
-                scan_quote_string(busca[i]);
+                scanf(" %s", campo[i]);
+               
+                
+                if(strcmp(campo[i], "nomeTecnologiaOrigem") == 0 || strcmp(campo[i], "nomeTecnologiaDestino") == 0 ){
+                    scan_quote_string(busca[i]);
+                }
+                else if (strcmp(campo[i], "grupo") == 0 || strcmp(campo[i], "popularidade") == 0 || strcmp(campo[i], "peso") == 0 ){
+                    scanf("%s", busca[i]);
+                    
+                }
+
                 func3(file3, campo[i], busca[i], &total);
+
             }
             break;
 
