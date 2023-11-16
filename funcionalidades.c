@@ -49,17 +49,20 @@ void func2(FILE *saida)
     // pula o cabecalho do arquivo
     fseek(saida, 13, SEEK_SET);
     Dados out;
-    if (!(fread(&out.removido, sizeof(char), 1, saida)))
+    if (!(fread(&out.removido, sizeof(char), 1, saida)))    while (fread(&out.removido, sizeof(char), 1, saida))
+
     {
         printf("Registro inexistente");
     }
+    int aux = 0;
 
     fseek(saida, 13, SEEK_SET);
 
     while (fread(&out.removido, sizeof(char), 1, saida))
-    {
+    {       
         if (out.removido == '0')
         {
+            aux = 1;
             fread(&out.grupo, sizeof(int), 1, saida);
             fread(&out.pop, sizeof(int), 1, saida);
             fread(&out.peso, sizeof(int), 1, saida);
@@ -68,14 +71,22 @@ void func2(FILE *saida)
             char buffer1[(out.tecOrigem).tamString];
             fread(buffer1, sizeof(char), out.tecOrigem.tamString, saida);
             strcpy(out.tecOrigem.nomeString, buffer1);
-
+        
             fread(&out.tecDestino.tamString, sizeof(int), 1, saida);
             char buffer[out.tecDestino.tamString];
             fread(buffer, sizeof(char), out.tecDestino.tamString, saida);
             strcpy(out.tecDestino.nomeString, buffer);
             imprimirRegistrosNaTela(&out);
+            
+        } 
+        else if(out.removido == '1'){
+            fseek(saida, 75, SEEK_CUR);
         }
     }
+    if(aux == 0){
+        printf("Registro inexistente");
+    }
+    
     fclose(saida);
 }
 
@@ -153,7 +164,6 @@ void func3(FILE *entrada, char *campo, char *busca, Dados *total)
     }
 }
 
-
 void func4(FILE *saida, int rrn)
 {
 
@@ -190,5 +200,66 @@ void func4(FILE *saida, int rrn)
     {
         printf("Registro inexistente.");
     }
+    fclose(saida);
+}
+
+void func5(FILE *entrada, FILE *saida){
+    
+    fclose(entrada);
+    fclose(saida);
+    // fecharArquivo(saida, &header);
+    // header.status = '1';
+    return;
+}
+
+void func2(FILE *saida)
+{
+
+    // pula o cabecalho do arquivo
+    fseek(saida, 13, SEEK_SET);
+    Dados registro;
+    if (!(fread(&registro.removido, sizeof(char), 1, saida)))    while (fread(&registro.removido, sizeof(char), 1, saida))
+
+    {
+        printf("Registro inexistente");
+    }
+    int aux = 0;
+
+    fseek(saida, 13, SEEK_SET);
+
+    while (fread(&registro.removido, sizeof(char), 1, saida))
+    {       
+        if (registro.removido == '0')
+        {
+            aux = 1;
+            fread(&registro.grupo, sizeof(int), 1, saida);
+            fread(&registro.pop, sizeof(int), 1, saida);
+            fread(&registro.peso, sizeof(int), 1, saida);
+
+            fread(&registro.tecOrigem.tamString, sizeof(int), 1, saida);
+            char buffer1[(registro.tecOrigem).tamString];
+            fread(buffer1, sizeof(char), registro.tecOrigem.tamString, saida);
+            strcpy(registro.tecOrigem.nomeString, buffer1);
+        
+            fread(&registro.tecDestino.tamString, sizeof(int), 1, saida);
+            char buffer[registro.tecDestino.tamString];
+            fread(buffer, sizeof(char), registro.tecDestino.tamString, saida);
+            strcpy(registro.tecDestino.nomeString, buffer);
+
+            //Concatenação da chave p/ arvore binaria
+            char strAux[100];
+            strcpy(strAux, registro.tecOrigem.nomeString);
+            strcat(strAux, registro.tecDestino.nomeString);
+
+            
+        } 
+        else if(registro.removido == '1'){
+            fseek(saida, 75, SEEK_CUR);
+        }
+    }
+    if(aux == 0){
+        printf("Registro inexistente");
+    }
+    
     fclose(saida);
 }

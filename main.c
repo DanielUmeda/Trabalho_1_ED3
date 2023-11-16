@@ -72,7 +72,7 @@ int main() {
 
             
 
-          fseek(file3, 0, SEEK_SET);
+            fseek(file3, 0, SEEK_SET);
             fread(&header.status, sizeof(char), 1, file3);
             if (file3 == NULL || header.status == '0') {
                 printf("Falha no processamento do arquivo.");
@@ -117,6 +117,24 @@ int main() {
             func4(file4, rrn);
 
             break;
+        case(5):
+            char arquivoDados[20];
+            char arquivoIndice[20];
+
+            scanf("%s%s", arquivoDados, arquivoIndice);
+
+            FILE *arquivoDados = fopen(arquivoDados, "rb");
+            FILE *arquivoIndice = fopen(arquivoIndice, "wb");
+
+            fseek(arquivoDados, 0, SEEK_SET);
+            fread(&header.status, sizeof(char), 1, in1);
+            if (arquivoDados == NULL || header.status == '0') {
+                printf("Falha no processamento do arquivo.");
+                break;
+            }
+            
+            func5(arquivoDados, arquivoIndice);
+            
         default:
             break;
     }
