@@ -118,7 +118,7 @@ int main() {
 
             break;
         case(5):
-            char arquivoDados[20];
+            /*char arquivoDados[20];
             char arquivoIndice[20];
 
             scanf("%s%s", arquivoDados, arquivoIndice);
@@ -133,34 +133,38 @@ int main() {
                 break;
             }
             
-            func5(arquivoDados, arquivoIndice);
+            func5(arquivoDados, arquivoIndice);*/
             break;
         case(6):
             char arquivoDados[20];
             char arquivoIndice[20];
-            char (*campo)[25] = malloc(n * sizeof(char[25]));
-            char (*busca)[25] = malloc(n * sizeof(char[25]));
-
+            char (*campo1)[25] = malloc(n * sizeof(char[25]));
+            char (*busca1)[25] = malloc(n * sizeof(char[25]));
+            Dados total1;
+            
             scanf("%s%s%d", arquivoDados, arquivoIndice, &n);
 
-            FILE *arquivoDados = fopen(arquivoDados, "rb");
-            FILE *arquivoIndice = fopen(arquivoIndice, "rb");
+            FILE *arqDados = fopen(arquivoDados, "rb");
+            FILE *arqIndice = fopen(arquivoIndice, "rb");
+            
+            
 
             for (int i = 0; i < n; i++) {
-                fseek(file3, 13, SEEK_SET);
-                scanf(" %s", campo[i]);
-               
-                
-                if(strcmp(campo[i], "nomeTecnologiaOrigem") == 0 || strcmp(campo[i], "nomeTecnologiaDestino") == 0){
-                    scan_quote_string(busca[i]);
-                    func3(file3, campo[i], busca[i], &total);
+                scanf(" %s", campo1[i]);
+                              
+                if(strcmp(campo1[i], "nomeTecnologiaOrigem") == 0 || strcmp(campo1[i], "nomeTecnologiaDestino") == 0){
+                    scan_quote_string(busca1[i]);
+                    fseek(arqDados, 13, SEEK_SET);
+                    func3(arqDados, campo1[i], busca1[i], &total);
                 }
-                else if (strcmp(campo[i], "grupo") == 0 || strcmp(campo[i], "popularidade") == 0 || strcmp(campo[i], "peso") == 0 ){
-                    scanf("%s", busca[i]);
-                    func3(file3, campo[i], busca[i], &total);
+                else if (strcmp(campo1[i], "grupo") == 0 || strcmp(campo1[i], "popularidade") == 0 || strcmp(campo1[i], "peso") == 0 ){
+                    scanf("%s", busca1[i]);
+                    fseek(arqDados, 13, SEEK_SET);
+                    func3(arqIndice, campo1[i], busca1[i], &total);
                 }
-                else if(strcmp(campo[i], "nomeTecnologiaOrigemDestino") == 0){
-                    func6(arquivoDados, arquivoIndice, campo[i], busca[i]);
+                else if(strcmp(campo1[i], "nomeTecnologiaOrigemDestino") == 0){
+                    scan_quote_string(busca1[i]);
+                    func6(arqDados, arqIndice, busca1[i]);
                 }   
             }
 
