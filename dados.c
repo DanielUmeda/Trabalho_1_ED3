@@ -219,20 +219,4 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia
     preencherLixo(arquivo, registro, tamanhoRealRegistro);
 }
 
-// Função para inserir um registro na árvore-B
-void inserirNaArvoreB(FILE *arquivoIndice, DadosArvoreB *registro, CabecalhoArvoreB *cabecalho) {
-    // Implementação da lógica de inserção na árvore-B
-}
-
-// Função para buscar um registro na árvore-B
-void buscarNaArvoreB(FILE *arquivoIndice, char *chave, DadosArvoreB *resultado, CabecalhoArvoreB *cabecalho) {
-    // Implementação da lógica de busca na árvore-B
-}
-
-// Função para atualizar o cabeçalho da árvore-B
-void atualizarCabecalhoArvoreB(FILE *arquivoIndice, CabecalhoArvoreB *cabecalho) {
-    // Implementação da atualização do cabeçalho
-}
-
-
 

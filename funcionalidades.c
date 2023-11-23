@@ -201,7 +201,7 @@
         {
             printf("Registro inexistente.");
         }
-        fclose(saida);
+
     }
 
     void func5(FILE *entrada, FILE *saida){
@@ -224,6 +224,12 @@
         }
 
         int rrnBuscado = encontrarRRN(busca, cabecalho.noRaiz, arquivoIndice);
-    
-    
+        if(rrnBuscado == -1){
+            printf("Registro inexistente.");
+        }
+        else{
+            func4(arquivoDados, rrnBuscado);
+        }
+
+
     }

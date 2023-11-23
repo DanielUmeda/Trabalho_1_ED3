@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #define M 4
 
@@ -24,6 +25,7 @@ typedef struct cabecalhoArvore{
 
 void lerCabecalho(cabecalhoArvore *cabecalhoArvore, FILE *arquivoIndice);
 int encontrarRRN(char *busca, int rrnDaRaiz, FILE *arquivoIndice);
+int encontrarRRNRec(char *busca, int rrnDaRaiz, FILE *arquivoIndice);
 void lerNo(No *no, FILE *arquivoIndice);
 
 #endif

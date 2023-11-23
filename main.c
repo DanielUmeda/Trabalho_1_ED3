@@ -5,15 +5,14 @@ João Marcelo Ferreira Battaglini - 13835472
 
 */
 
-
 #include <stdio.h>
 #include "dados.h"
 #include "funcionalidades.h"
 #include "funcoesFornecidas.h"
 #include <stdlib.h>
 
-
-int main() {
+int main()
+{
 
     int funcionalidade;
     char input[20];
@@ -28,148 +27,163 @@ int main() {
 
     switch (funcionalidade)
     {
-        case (1):
-            //le o arquivo de entrada e saida (binario)
-            scanf("%s %s", input, output);
-            FILE *in1 = fopen(input, "r");
+    case (1):
+        // le o arquivo de entrada e saida (binario)
+        scanf("%s %s", input, output);
+        FILE *in1 = fopen(input, "r");
 
-            fseek(in1, 0, SEEK_SET);
-            fread(&header.status, sizeof(char), 1, in1);
-            if (in1 == NULL || header.status == '0') {
-                printf("Falha no processamento do arquivo.");
-                break;
+        fseek(in1, 0, SEEK_SET);
+        fread(&header.status, sizeof(char), 1, in1);
+        if (in1 == NULL || header.status == '0')
+        {
+            printf("Falha no processamento do arquivo.");
+            break;
+        }
+
+        FILE *out1 = fopen(output, "wb+");
+        func1(in1, out1);
+        binarioNaTela(output);
+
+        break;
+    case (2):
+        // le o arquivo binario
+        scanf("%s", arquivo);
+
+        FILE *file2 = fopen(arquivo, "rb");
+
+        fseek(file2, 0, SEEK_SET);
+        fread(&header.status, sizeof(char), 1, file2);
+        if (file2 == NULL || header.status == '0')
+        {
+            printf("Falha no processamento do arquivo.");
+            break;
+        }
+
+        func2(file2);
+
+        break;
+    case (3):
+        scanf("%s%d", arquivo1, &n);
+
+        char(*campo)[25] = malloc(n * sizeof(char[25]));
+        char(*busca)[25] = malloc(n * sizeof(char[25]));
+
+        FILE *file3 = fopen(arquivo1, "rb+");
+        Dados total;
+
+        fseek(file3, 0, SEEK_SET);
+        fread(&header.status, sizeof(char), 1, file3);
+        if (file3 == NULL || header.status == '0')
+        {
+            printf("Falha no processamento do arquivo.");
+            break;
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            fseek(file3, 13, SEEK_SET);
+            scanf(" %s", campo[i]);
+
+            if (strcmp(campo[i], "nomeTecnologiaOrigem") == 0 || strcmp(campo[i], "nomeTecnologiaDestino") == 0)
+            {
+                scan_quote_string(busca[i]);
+            }
+            else if (strcmp(campo[i], "grupo") == 0 || strcmp(campo[i], "popularidade") == 0 || strcmp(campo[i], "peso") == 0)
+            {
+                scanf("%s", busca[i]);
             }
 
-            FILE *out1 = fopen(output, "wb+");
-            func1(in1, out1);
-            binarioNaTela(output);
+            func3(file3, campo[i], busca[i], &total);
+        }
+        break;
 
+    case (4):
+        // le o arquivo binario
+        scanf("%s%d", arquivo2, &rrn);
+        /*if(rrn > 490){
+            printf("Registro inexistente.");
             break;
-        case (2):
-            //le o arquivo binario
-            scanf("%s", arquivo);
+        }*/
+        FILE *file4 = fopen(arquivo2, "rb+");
 
-            FILE *file2 = fopen(arquivo, "rb");
+        fseek(file4, 0, SEEK_SET);
+        fread(&header.status, sizeof(char), 1, file4);
+        if (file4 == NULL || header.status == '0')
+        {
+            printf("Falha no processamento do arquivo.");
+            break;
+        }
 
-            fseek(file2, 0, SEEK_SET);
-            fread(&header.status, sizeof(char), 1, file2);
-            if (file2 == NULL || header.status == '0') {
-                printf("Falha no processamento do arquivo.");
-                break;
+        func4(file4, rrn);
+
+        break;
+    case (5):
+        /*char arquivoDados[20];
+        char arquivoIndice[20];
+
+        scanf("%s%s", arquivoDados, arquivoIndice);
+
+        FILE *arquivoDados = fopen(arquivoDados, "rb");
+        FILE *arquivoIndice = fopen(arquivoIndice, "wb");
+
+        fseek(arquivoDados, 0, SEEK_SET);
+        fread(&header.status, sizeof(char), 1, in1);
+        if (arquivoDados == NULL || header.status == '0') {
+            printf("Falha no processamento do arquivo.");
+            break;
+        }
+
+        func5(arquivoDados, arquivoIndice);*/
+        break;
+    case (6):
+        char arquivoDados[20];
+        char arquivoIndice[20];
+        Dados total1;
+
+        scanf("%s%s%d", arquivoDados, arquivoIndice, &n);
+        
+        char campo1[55];
+        char busca1[55];
+
+        FILE *arqDados = fopen(arquivoDados, "rb");
+        FILE *arqIndice = fopen(arquivoIndice, "rb");
+
+        fseek(arqDados, 13, SEEK_SET);
+
+
+        for (int i = 0; i < n; i++)
+        {
+            scanf("%s", campo1);
+
+            if (strcmp(campo1, "nomeTecnologiaOrigem") == 0 || strcmp(campo1, "nomeTecnologiaDestino") == 0)
+            {
+                scan_quote_string(busca1);
+                fseek(arqDados, 13, SEEK_SET);
+                func3(arqDados, campo1, busca1, &total1);
             }
-
-            func2(file2);
-
-            break;
-        case (3):
-            scanf("%s%d", arquivo1, &n);
-
-            char (*campo)[25] = malloc(n * sizeof(char[25]));
-            char (*busca)[25] = malloc(n * sizeof(char[25]));
-
-            FILE *file3 = fopen(arquivo1, "rb+");
-            Dados total;
-
-            
-
-            fseek(file3, 0, SEEK_SET);
-            fread(&header.status, sizeof(char), 1, file3);
-            if (file3 == NULL || header.status == '0') {
-                printf("Falha no processamento do arquivo.");
-                break;
-            }
-
-            for (int i = 0; i < n; i++) {
-                fseek(file3, 13, SEEK_SET);
-                scanf(" %s", campo[i]);
-               
-                
-                if(strcmp(campo[i], "nomeTecnologiaOrigem") == 0 || strcmp(campo[i], "nomeTecnologiaDestino") == 0 ){
-                    scan_quote_string(busca[i]);
-                }
-                else if (strcmp(campo[i], "grupo") == 0 || strcmp(campo[i], "popularidade") == 0 || strcmp(campo[i], "peso") == 0 ){
-                    scanf("%s", busca[i]);
-                    
-                }
-
-                func3(file3, campo[i], busca[i], &total);
+            else if (strcmp(campo1, "grupo") == 0 || strcmp(campo1, "popularidade") == 0 || strcmp(campo1, "peso") == 0)
+            {
+                scanf("%s", busca1);
+                fseek(arqDados, 13, SEEK_SET);
+                func3(arqDados, campo1, busca1, &total1);
 
             }
-            break;
+            else if (strcmp(campo1, "nomeTecnologiaOrigemDestino") == 0)
+            {
+                scan_quote_string(busca1);
+                fseek(arqDados, 13, SEEK_SET);
+                func6(arqDados, arqIndice, busca1);
 
-        case (4):
-            //le o arquivo binario
-            scanf("%s%d", arquivo2, &rrn);
-            /*if(rrn > 490){
-                printf("Registro inexistente.");
-                break;
-            }*/
-            FILE *file4 = fopen(arquivo2, "rb+");
-
-            fseek(file4, 0, SEEK_SET);
-            fread(&header.status, sizeof(char), 1, file4);
-            if (file4 == NULL || header.status == '0') {
-                printf("Falha no processamento do arquivo.");
-                break;
             }
+        }
+        fclose(arqDados);
+        fclose(arqIndice);
 
 
-            func4(file4, rrn);
-
-            break;
-        case(5):
-            /*char arquivoDados[20];
-            char arquivoIndice[20];
-
-            scanf("%s%s", arquivoDados, arquivoIndice);
-
-            FILE *arquivoDados = fopen(arquivoDados, "rb");
-            FILE *arquivoIndice = fopen(arquivoIndice, "wb");
-
-            fseek(arquivoDados, 0, SEEK_SET);
-            fread(&header.status, sizeof(char), 1, in1);
-            if (arquivoDados == NULL || header.status == '0') {
-                printf("Falha no processamento do arquivo.");
-                break;
-            }
-            
-            func5(arquivoDados, arquivoIndice);*/
-            break;
-        case(6):
-            char arquivoDados[20];
-            char arquivoIndice[20];
-            char (*campo1)[25] = malloc(n * sizeof(char[25]));
-            char (*busca1)[25] = malloc(n * sizeof(char[25]));
-            Dados total1;
-            
-            scanf("%s%s%d", arquivoDados, arquivoIndice, &n);
-
-            FILE *arqDados = fopen(arquivoDados, "rb");
-            FILE *arqIndice = fopen(arquivoIndice, "rb");
-            
-            
-
-            for (int i = 0; i < n; i++) {
-                scanf(" %s", campo1[i]);
-                              
-                if(strcmp(campo1[i], "nomeTecnologiaOrigem") == 0 || strcmp(campo1[i], "nomeTecnologiaDestino") == 0){
-                    scan_quote_string(busca1[i]);
-                    fseek(arqDados, 13, SEEK_SET);
-                    func3(arqDados, campo1[i], busca1[i], &total);
-                }
-                else if (strcmp(campo1[i], "grupo") == 0 || strcmp(campo1[i], "popularidade") == 0 || strcmp(campo1[i], "peso") == 0 ){
-                    scanf("%s", busca1[i]);
-                    fseek(arqDados, 13, SEEK_SET);
-                    func3(arqIndice, campo1[i], busca1[i], &total);
-                }
-                else if(strcmp(campo1[i], "nomeTecnologiaOrigemDestino") == 0){
-                    scan_quote_string(busca1[i]);
-                    func6(arqDados, arqIndice, busca1[i]);
-                }   
-            }
-
-            break;
-        default:
-            break;
+        break;
+    
+    default:
+        break;
     }
+
 }
