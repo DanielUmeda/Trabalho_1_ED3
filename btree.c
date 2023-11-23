@@ -20,14 +20,3 @@ No* criarNo(){
     return novoNo;
 }
 
-void inserirChave(No **raiz, char chave[3][55], int rrn){
-    //árvore vazia, cria um nó
-    if (*raiz == NULL){
-        *raiz = criarNo();
-        (*raiz)->nroChavesNo = 1;
-        for (int i = 0; i < M-1; i++)
-        {
-            strcpy((*raiz)->C[i], chave[i]);
-        }
-    }
-}

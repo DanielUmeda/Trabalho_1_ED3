@@ -15,7 +15,4 @@ typedef struct No {
 }No;
 
 
-No* criarNo();
-void inserirChave(No **raiz, char chave[3][55], int referencia);
-
 #endif

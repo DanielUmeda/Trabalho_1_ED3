@@ -134,7 +134,37 @@ int main() {
             }
             
             func5(arquivoDados, arquivoIndice);
-            
+            break;
+        case(6):
+            char arquivoDados[20];
+            char arquivoIndice[20];
+            char (*campo)[25] = malloc(n * sizeof(char[25]));
+            char (*busca)[25] = malloc(n * sizeof(char[25]));
+
+            scanf("%s%s%d", arquivoDados, arquivoIndice, &n);
+
+            FILE *arquivoDados = fopen(arquivoDados, "rb");
+            FILE *arquivoIndice = fopen(arquivoIndice, "rb");
+
+            for (int i = 0; i < n; i++) {
+                fseek(file3, 13, SEEK_SET);
+                scanf(" %s", campo[i]);
+               
+                
+                if(strcmp(campo[i], "nomeTecnologiaOrigem") == 0 || strcmp(campo[i], "nomeTecnologiaDestino") == 0){
+                    scan_quote_string(busca[i]);
+                    func3(file3, campo[i], busca[i], &total);
+                }
+                else if (strcmp(campo[i], "grupo") == 0 || strcmp(campo[i], "popularidade") == 0 || strcmp(campo[i], "peso") == 0 ){
+                    scanf("%s", busca[i]);
+                    func3(file3, campo[i], busca[i], &total);
+                }
+                else if(strcmp(campo[i], "nomeTecnologiaOrigemDestino") == 0){
+                    func6(arquivoDados, arquivoIndice, campo[i], busca[i]);
+                }   
+            }
+
+            break;
         default:
             break;
     }
