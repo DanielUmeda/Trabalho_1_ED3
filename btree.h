@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
+
 #define M 4
 
 typedef struct No {

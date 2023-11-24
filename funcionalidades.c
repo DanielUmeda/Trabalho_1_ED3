@@ -93,11 +93,19 @@
 
     void func3(FILE *entrada, char *campo, char *busca, Dados *total)
     {
-
+        Header header;
+        fseek(entrada, 0, SEEK_SET);
+        fread(&header.status, sizeof(char), 1, entrada);
+        if (entrada == NULL || header.status == '0')
+        {
+            printf("Falha no processamento do arquivo.");
+            return;
+        }
         int encontrado = 0;
         Dados out;
         while (fread(&out.removido, sizeof(char), 1, entrada))
         {
+        
             if (out.removido == '0')
             {
                 fread(&out.grupo, sizeof(int), 1, entrada);
@@ -158,6 +166,9 @@
                     }
                 }
             }
+            else if(out.removido == '1'){
+                fseek(entrada, 75, SEEK_CUR);
+            }
         }
         if (!encontrado)
         {
@@ -168,13 +179,14 @@
     void func4(FILE *saida, int rrn)
     {
 
-        int proxRRN = 0;
-        // pula o cabecalho do arquivo
-        fseek(saida, 13, SEEK_SET);
+        int posicao = 76 * rrn;
+        int encontrado = 0;
+        // pula o cabecalho do arquivo  
+        fseek(saida, 13 + posicao, SEEK_SET);
         Dados out;
-        while (fread(&out.removido, sizeof(char), 1, saida))
-        {
-            if (out.removido == '0')
+        fread(&out.removido, sizeof(char), 1, saida);
+        
+        if (out.removido == '0')
             {
                 fread(&out.grupo, sizeof(int), 1, saida);
                 fread(&out.pop, sizeof(int), 1, saida);
@@ -190,18 +202,19 @@
                 fread(buffer, sizeof(char), out.tecDestino.tamString, saida);
                 strcpy(out.tecDestino.nomeString, buffer);
 
-                if (proxRRN == rrn)
-                {
-                    imprimirRegistrosNaTela(&out);
-                }
-                proxRRN++;
-            }
-        }
-        if (rrn > proxRRN)
-        {
-            printf("Registro inexistente.");
-        }
+                
+                
+                encontrado = 1;
 
+            }
+
+        
+        if(encontrado == 1){
+            imprimirRegistrosNaTela(&out);
+        }
+        else{
+            printf("Registro inexistente.\n");
+        }
     }
 
     void func5(FILE *entrada, FILE *saida){
@@ -213,23 +226,24 @@
         return;
     }
 
-    void func6(FILE *arquivoDados, FILE *arquivoIndice, char* busca){
+    int func6(FILE *arquivoDados, FILE *arquivoIndice, char* busca){
         
         cabecalhoArvore cabecalho;
 
         lerCabecalho(&cabecalho, arquivoIndice);
         if(cabecalho.status == '0'){
             printf("Falha no processamento do arquivo.");
-            return;
+            return -1;
         }
+
 
         int rrnBuscado = encontrarRRN(busca, cabecalho.noRaiz, arquivoIndice);
         if(rrnBuscado == -1){
-            printf("Registro inexistente.");
+            printf("Registro inexistente.\n");
         }
         else{
             func4(arquivoDados, rrnBuscado);
         }
 
-
+        return 0;
     }

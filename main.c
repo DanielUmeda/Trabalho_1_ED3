@@ -9,7 +9,9 @@ João Marcelo Ferreira Battaglini - 13835472
 #include "dados.h"
 #include "funcionalidades.h"
 #include "funcoesFornecidas.h"
+#include "btree.h"
 #include <stdlib.h>
+
 
 int main()
 {
@@ -172,8 +174,10 @@ int main()
             {
                 scan_quote_string(busca1);
                 fseek(arqDados, 13, SEEK_SET);
-                func6(arqDados, arqIndice, busca1);
-
+                fseek(arqIndice, 0, SEEK_SET);
+                if(func6(arqDados, arqIndice, busca1) == -1){
+                    break;
+                }
             }
         }
         fclose(arqDados);
