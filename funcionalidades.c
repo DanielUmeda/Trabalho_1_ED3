@@ -85,7 +85,7 @@
             }
         }
         if(aux == 0){
-            printf("Registro inexistente");
+            printf("Registro inexistente.\n");
         }
         
         fclose(saida);
@@ -98,7 +98,7 @@
         fread(&header.status, sizeof(char), 1, entrada);
         if (entrada == NULL || header.status == '0')
         {
-            printf("Falha no processamento do arquivo.");
+            printf("Falha no processamento do arquivo.\n");
             return;
         }
         int encontrado = 0;
@@ -200,10 +200,7 @@
                 fread(&out.tecDestino.tamString, sizeof(int), 1, saida);
                 char buffer[out.tecDestino.tamString];
                 fread(buffer, sizeof(char), out.tecDestino.tamString, saida);
-                strcpy(out.tecDestino.nomeString, buffer);
-
-                
-                
+                strcpy(out.tecDestino.nomeString, buffer);   
                 encontrado = 1;
 
             }
@@ -219,12 +216,14 @@
 
     void func5(FILE *entrada, FILE *saida){
         Dados out;
+        /*
         while (fread(&out.removido, sizeof(char), 1, entrada)){
-            if(removido == '0'){
+            if(out.removido == '0'){
                 inserirNoNó();
                 inserirNaArvoreB();
             }
         }
+        */
 
 
 
@@ -241,10 +240,9 @@
 
         lerCabecalho(&cabecalho, arquivoIndice);
         if(cabecalho.status == '0'){
-            printf("Falha no processamento do arquivo.");
+            printf("Falha no processamento do arquivo.\n");
             return -1;
         }
-
 
         int rrnBuscado = encontrarRRN(busca, cabecalho.noRaiz, arquivoIndice);
         if(rrnBuscado == -1){

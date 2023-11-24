@@ -104,9 +104,9 @@ int encontrarRRNRec(char *busca, int rrnAtual, FILE *arquivoIndice)
 int encontrarRRN(char *busca, int rrnDaRaiz, FILE *arquivoIndice){
     return encontrarRRNRec(busca, rrnDaRaiz, arquivoIndice);
 }
-
+/*
 void inserirNoNó(No no){
-    short naoAchouAPosicao; 
+    /*short naoAchouAPosicao; 
     int k;
     k = no.nroChavesNo;
     naoAchouAPosicao = k > 0;
@@ -125,11 +125,13 @@ void inserirNoNó(No no){
     no.P[k] = no;
     no.C[k+1] = apDir;
     no.nroChavesNo++; 
+    
 }
 
 // Função para inserir um registro na árvore-B
 void inserirNaArvoreB(FILE *arquivoIndice, DadosArvoreB *registro, CabecalhoArvoreB *cabecalho) {
     // Implementação da lógica de inserção na árvore-B
+    /*
     long i = 1;
     long j;
     Apontador apTemp;
@@ -168,9 +170,11 @@ void inserirNaArvoreB(FILE *arquivoIndice, DadosArvoreB *registro, CabecalhoArvo
         *regRetorno = ap->r[m];
         *apRetorno = apTemp;
     }
+    
 }
 
 void insere(Registro Reg, Apontador ap){
+    /*
     short Cresceu;
     Registro regRetorno;
     No *apRetorno, apTemp;
@@ -183,4 +187,6 @@ void insere(Registro Reg, Apontador ap){
         apTemp->p[0] - *ap;
         *ap = apTemp;
     }
+    
 }
+*/
