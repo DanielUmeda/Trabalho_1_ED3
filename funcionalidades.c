@@ -218,7 +218,16 @@
     }
 
     void func5(FILE *entrada, FILE *saida){
-        
+        Dados out;
+        while (fread(&out.removido, sizeof(char), 1, entrada)){
+            if(removido == '0'){
+                inserirNoNó();
+                inserirNaArvoreB();
+            }
+        }
+
+
+
         fclose(entrada);
         fclose(saida);
         // fecharArquivo(saida, &header);

@@ -104,3 +104,83 @@ int encontrarRRNRec(char *busca, int rrnAtual, FILE *arquivoIndice)
 int encontrarRRN(char *busca, int rrnDaRaiz, FILE *arquivoIndice){
     return encontrarRRNRec(busca, rrnDaRaiz, arquivoIndice);
 }
+
+void inserirNoNó(No no){
+    short naoAchouAPosicao; 
+    int k;
+    k = no.nroChavesNo;
+    naoAchouAPosicao = k > 0;
+    while(naoAchouAPosicao){
+        if(no.C[k] >= no.P[k-1]){
+            naoAchouAPosicao = FALSE;
+            break;
+        }
+        no.P[k] = no.P[k-1];
+        no.C[k+1] = no.C[k];
+        k--;
+        if(k < 1){
+            naoAchouAPosicao = FALSE;
+        }
+    }
+    no.P[k] = no;
+    no.C[k+1] = apDir;
+    no.nroChavesNo++; 
+}
+
+// Função para inserir um registro na árvore-B
+void inserirNaArvoreB(FILE *arquivoIndice, DadosArvoreB *registro, CabecalhoArvoreB *cabecalho) {
+    // Implementação da lógica de inserção na árvore-B
+    long i = 1;
+    long j;
+    Apontador apTemp;
+    if(ap == NULL){
+        *Cresceu = TRUE;
+        *regRetorno = Reg;
+        *apRetorno = NULL;
+        return;
+    }
+    while(i < ap->n && Reg.Chave > ap->r[i-1].Chave){
+        i++;
+    }
+    if(Reg.Chave < ap->r[i-1].Chave){
+        //Erro: registro ja esta presente
+    }
+    if(Reg.Chave < ap->r[i-1].Chave){
+        i--;
+    }
+    inserirNaArvoreB(Reg, ap->p[i], Cresceu, regRetorno, apRetorno);
+    if(!*Cresceu){
+        return;
+    }
+    if(ap->n < mm){
+        InserirNoNó(ap, *regRetorno, *apRetorno);
+        *Cresceu = FALSE;
+        return;
+    }
+    //Overflow: no tem que ser dividido
+    apTemp = (Apontador)malloc(sizeof(Nó));
+    apTemp->n = 0;
+    apTemp->p[0] = NULL;
+    if(i < m+1){
+        InserirNoNó(apTemp, ap->r[j-1],ap->p[j]);
+        ap->n = m;
+        apTemp->p[0] = ap->p[m+1];
+        *regRetorno = ap->r[m];
+        *apRetorno = apTemp;
+    }
+}
+
+void insere(Registro Reg, Apontador ap){
+    short Cresceu;
+    Registro regRetorno;
+    No *apRetorno, apTemp;
+    InserirNaArvoreB(Reg, *ap, &Cresceu, &regRetorno, &apRetorno);
+    if(Cresceu){
+        apTemp = (No*)malloc(sizeof(No));
+        apTemp->n = 1;
+        apTemp->r[0] = regRetorno;
+        apTemp->p[1] = apRetorno;
+        apTemp->p[0] - *ap;
+        *ap = apTemp;
+    }
+}
