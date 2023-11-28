@@ -12,7 +12,6 @@ João Marcelo Ferreira Battaglini - 13835472
 #include "btree.h"
 #include <stdlib.h>
 
-
 int main()
 {
 
@@ -120,38 +119,49 @@ int main()
 
         break;
     case (5):
-        /*char arquivoDados[20];
-        char arquivoIndice[20];
+        char arquivoDados1[20];
+        char arquivoIndice1[20];
 
-        scanf("%s%s", arquivoDados, arquivoIndice);
+        scanf("%s%s", arquivoDados1, arquivoIndice1);
 
-        FILE *arquivoDados = fopen(arquivoDados, "rb");
-        FILE *arquivoIndice = fopen(arquivoIndice, "wb");
+        FILE *arqDados1 = fopen(arquivoDados1, "rb");
+        FILE *arqIndice1 = fopen(arquivoIndice1, "wb");
+        Header header5;
+        fseek(arqDados1, 0, SEEK_SET);
+        fread(&header5.status, sizeof(char), 1, arqDados1);
 
-        fseek(arquivoDados, 0, SEEK_SET);
-        fread(&header.status, sizeof(char), 1, in1);
-        if (arquivoDados == NULL || header.status == '0') {
-            printf("Falha no processamento do arquivo.");
+        if (arqDados1 == NULL || arqIndice1 == NULL || header5.status == '0')
+        {
+            printf("Falha no processamento do arquivo.\n");
             break;
         }
 
-        func5(arquivoDados, arquivoIndice);*/
+        func5(arqDados1, arqIndice1);
         break;
+
     case (6):
         char arquivoDados[20];
         char arquivoIndice[20];
         Dados total1;
 
         scanf("%s%s%d", arquivoDados, arquivoIndice, &n);
-        
+
         char campo1[55];
         char busca1[55];
 
         FILE *arqDados = fopen(arquivoDados, "rb");
         FILE *arqIndice = fopen(arquivoIndice, "rb");
+        Header header6;
+        fseek(arqDados, 0, SEEK_SET);
+        fread(&header6.status, sizeof(char), 1, arqDados);
+
+        if (arqDados == NULL || arqIndice == NULL || header6.status == '0')
+        {
+            printf("Falha no processamento do arquivo.\n");
+            break;
+        }
 
         fseek(arqDados, 13, SEEK_SET);
-
 
         for (int i = 0; i < n; i++)
         {
@@ -168,14 +178,14 @@ int main()
                 scanf("%s", busca1);
                 fseek(arqDados, 13, SEEK_SET);
                 func3(arqDados, campo1, busca1, &total1);
-
             }
             else if (strcmp(campo1, "nomeTecnologiaOrigemDestino") == 0)
             {
                 scan_quote_string(busca1);
                 fseek(arqDados, 13, SEEK_SET);
                 fseek(arqIndice, 0, SEEK_SET);
-                if(func6(arqDados, arqIndice, busca1) == -1){
+                if (func6(arqDados, arqIndice, busca1) == -1)
+                {
                     break;
                 }
             }
@@ -183,11 +193,29 @@ int main()
         fclose(arqDados);
         fclose(arqIndice);
 
-
         break;
-    
+
+    case (7):
+        char arquivoDados7[30];
+        char arquivoIndices7[30];
+
+
+        scanf("%s%s%d", arquivoDados7, arquivoIndices7, &n);
+
+        FILE *arqDados7 = fopen(arquivoDados7, "ab+");
+        FILE *arqIndices7 = fopen(arquivoIndices7, "rb+");
+        Header header7;
+
+        fread(&header7.status, sizeof(char), 1, arqDados7);
+        if (arqDados7 == NULL || arqIndices7 == NULL || header7.status == '0')
+        {
+            printf("Falha no processamento do arquivo.\n");
+            break;
+        }
+        func7(arqDados7, arqIndices7, n);
+        
+
     default:
         break;
     }
-
 }

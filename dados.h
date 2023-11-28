@@ -6,6 +6,7 @@
 
 #define TAM_CAMPOS_FIXOS 21
 #define TAM_REGISTRO 76
+#define TAM_MAX_STRINGS 55
 #define TAM_CABECALHO 13
 #define MAX_LIXO 196
 #define MAX_M 4
@@ -42,7 +43,7 @@ void lerRegistro(FILE *arquivo, Dados *registro);
 void inicializarHeader(Header *header);
 void atualizarHeader(FILE *arquivo, Header *header);
 void imprimirRegistrosNaTela(Dados *registro);
-void preencherLixo(FILE *arquivo, Dados *registro, int tamRealReg);
+void preencherLixo(FILE *arquivo, int tamRealReg);
 void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia tecTotal[], int *numTecTotal, Tecnologia tecPar[], int *numTecPar);
 void imprimirTecnologiasUnicas(int numTecTotal, int numTecPar);
 void lerSaida(FILE *saida, Dados *out);

@@ -177,7 +177,7 @@ void imprimirRegistrosNaTela(Dados *registro) {
 
 }
 
-void preencherLixo(FILE *arquivo, Dados *registro, int tamRealRegistro) {
+void preencherLixo(FILE *arquivo, int tamRealRegistro) {
 
     int tamPreencher = TAM_REGISTRO - tamRealRegistro;
     //enquanto i for menor que o tamanho não preenchido do registro, insere-se 1 '$'
@@ -216,7 +216,7 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia
     fwrite(registro->tecDestino.nomeString, sizeof(char), tamDestino, arquivo);
 
     //Com o registro todo preenchido, devemos preencher o restante com $, até que os 76 bytes sejam utilizados
-    preencherLixo(arquivo, registro, tamanhoRealRegistro);
+    preencherLixo(arquivo, tamanhoRealRegistro);
 }
 
 

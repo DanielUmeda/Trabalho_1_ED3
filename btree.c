@@ -58,6 +58,7 @@ void lerNo(No *no, FILE *arquivoIndice)
     }
 }
 
+//função recursiva para encontrar o RRN
 int encontrarRRNRec(char *busca, int rrnAtual, FILE *arquivoIndice)
 {
     fseek(arquivoIndice, (rrnAtual + 1) * 205, SEEK_SET);
@@ -68,7 +69,7 @@ int encontrarRRNRec(char *busca, int rrnAtual, FILE *arquivoIndice)
     for (int i = 0; i <= 3; i++)
     {
         int resultado = strcmp(busca, no.C[i]);
-
+        
         if(i == 3){
             if (no.P[i] != -1)
             {
@@ -101,9 +102,12 @@ int encontrarRRNRec(char *busca, int rrnAtual, FILE *arquivoIndice)
     }    
 }
 
+//função auxiliar para chamar a função principal recursiva.
 int encontrarRRN(char *busca, int rrnDaRaiz, FILE *arquivoIndice){
     return encontrarRRNRec(busca, rrnDaRaiz, arquivoIndice);
 }
+
+
 /*
 void inserirNoNó(No no){
     /*short naoAchouAPosicao; 
