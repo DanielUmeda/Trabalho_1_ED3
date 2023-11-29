@@ -280,13 +280,10 @@ int func7(FILE *arquivoDados, FILE *arquivoIndice, int n)
     for (int i = 0; i < n; i++)
     {
 
-        scanf(" %[^,], %[^,], %[^,], %[^,], %[^,]", registroAux.tecOrigem.nomeString, grupo, pop, registroAux.tecDestino.nomeString, peso);
+        scanf(" %[^,],%d,%d, %[^,],%d", registroAux.tecOrigem.nomeString, &registroAux.grupo, &registroAux.pop, registroAux.tecDestino.nomeString, &registroAux.peso);
         int comp1 = strcmp(nulo, registroAux.tecOrigem.nomeString);
         int comp2 = strcmp(nulo, registroAux.tecDestino.nomeString);
-        int comp3 = strcmp(nulo, grupo);
-        int comp4 = strcmp(nulo, pop);
-        int comp5 = strcmp(nulo, peso);
-        
+ 
 
         if(comp1 == 0){
             registroAux.tecOrigem.tamString = 0;
@@ -296,21 +293,7 @@ int func7(FILE *arquivoDados, FILE *arquivoIndice, int n)
             registroAux.tecDestino.tamString = 0;
             registroAux.tecDestino.nomeString[0] = '\0';
         }
-        if(comp3 == 0){
-            char *endptr;
-            int numero = strtol(grupo, &endptr, 10);
-            registroAux.grupo = numero;
-        }
-        if(comp4 == 0){
-            char *endptr;
-            int numero = strtol(pop, &endptr, 10);
-            registroAux.pop = numero;
-        }
-        if(comp5 == 0){
-            char *endptr;
-            int numero = strtol(peso, &endptr, 10);
-            registroAux.peso = numero;
-        }
+
         atualizarIndices(&registroAux, arquivoDados, arquivoIndice);
     }
 }
