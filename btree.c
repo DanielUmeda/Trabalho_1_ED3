@@ -108,6 +108,57 @@ int encontrarRRN(char *busca, int rrnDaRaiz, FILE *arquivoIndice){
 }
 
 
+int inserirNo(Dados *aInserir, int rrnAtual, FILE *arquivoIndice){
+    fseek(arquivoIndice, (rrnAtual + 1) * 205, SEEK_SET);
+    
+    char busca[55];
+    strcpy(busca, aInserir->tecOrigem.nomeString);
+    strcat(busca, aInserir->tecDestino.nomeString);
+
+
+    No no;
+    lerNo(&no, arquivoIndice);
+
+    for (int i = 0; i <= 3; i++)
+    {
+        int resultado = strcmp(busca, no.C[i]);
+        
+        if(i == 3){
+            if (no.P[i] != -1)
+            {
+                return encontrarRRNRec(busca, no.P[i], arquivoIndice);
+            }
+            else{
+                return -1;
+            }
+        }
+        if (resultado < 0 || no.C[i][0] == '\0'){
+            //busca é menor que c[i], logo deve estar à esquerda
+            if (no.P[i] != -1)
+            {
+                return encontrarRRNRec(busca, no.P[i], arquivoIndice);
+            }
+            else{
+                return -1;
+            }
+        } else if (resultado == 0)
+        {
+            //busca é igual à c[i], retornar a referência
+            return no.Pr[i];
+        }
+    }
+     if (no.P[no.nroChavesNo] != -1) {
+        return encontrarRRNRec(busca, no.P[no.nroChavesNo], arquivoIndice);
+    } else {
+        // Se não houver último filho, a busca não foi encontrada
+        return -1;
+    }
+
+}
+int inserirNoRec(Dados *aInserir, int rrnDaRaiz, FILE *arquivoIndice){
+    
+}
+
 /*
 void inserirNoNó(No no){
     /*short naoAchouAPosicao; 
