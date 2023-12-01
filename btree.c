@@ -58,7 +58,7 @@ void lerNo(No *no, FILE *arquivoIndice)
     }
 }
 
-//função recursiva para encontrar o RRN
+// função recursiva para encontrar o RRN
 int encontrarRRNRec(char *busca, int rrnAtual, FILE *arquivoIndice)
 {
     fseek(arquivoIndice, (rrnAtual + 1) * 205, SEEK_SET);
@@ -66,55 +66,71 @@ int encontrarRRNRec(char *busca, int rrnAtual, FILE *arquivoIndice)
     No no;
     lerNo(&no, arquivoIndice);
 
+    /*
+    Para ficar mais fácil a verificação, estamos sempre levando em conta o ponteiro à esquerda da chave. No caso C[3] não existe, pois são apenas 3 chaves por nó
+    No entanto, ao utilizar i = 3, podemos verificar seu "filho" à esquerda, que seria o filho à direita de C[2].
+     
+    */
     for (int i = 0; i <= 3; i++)
     {
         int resultado = strcmp(busca, no.C[i]);
-        
-        if(i == 3){
+
+        if (i == 3)
+        {   
+            //No caso que i = 3, não há filhos à direita, então só podem estar à esquerda
             if (no.P[i] != -1)
             {
                 return encontrarRRNRec(busca, no.P[i], arquivoIndice);
             }
-            else{
+            else
+            {
                 return -1;
             }
         }
-        if (resultado < 0 || no.C[i][0] == '\0'){
-            //busca é menor que c[i], logo deve estar à esquerda
+        if (resultado < 0 || no.C[i][0] == '\0')
+        {
+            // busca é menor que c[i], logo deve estar à esquerda
             if (no.P[i] != -1)
             {
                 return encontrarRRNRec(busca, no.P[i], arquivoIndice);
             }
-            else{
+            else
+            {
                 return -1;
             }
-        } else if (resultado == 0)
+        }
+        else if (resultado == 0)
         {
-            //busca é igual à c[i], retornar a referência
+            // busca é igual à c[i], retornar a referência
             return no.Pr[i];
         }
     }
-     if (no.P[no.nroChavesNo] != -1) {
+    if (no.P[no.nroChavesNo] != -1)
+    {
         return encontrarRRNRec(busca, no.P[no.nroChavesNo], arquivoIndice);
-    } else {
+    }
+    else
+    {
         // Se não houver último filho, a busca não foi encontrada
         return -1;
-    }    
+    }
 }
 
-//função auxiliar para chamar a função principal recursiva.
-int encontrarRRN(char *busca, int rrnDaRaiz, FILE *arquivoIndice){
+// função auxiliar para chamar a função principal recursiva.
+int encontrarRRN(char *busca, int rrnDaRaiz, FILE *arquivoIndice)
+{
     return encontrarRRNRec(busca, rrnDaRaiz, arquivoIndice);
 }
 
+//prototipo para inserção de um nó. --Não implementado--
 
-int inserirNo(Dados *aInserir, int rrnAtual, FILE *arquivoIndice){
+int inserirNo(Dados *aInserir, int rrnAtual, FILE *arquivoIndice)
+{
     fseek(arquivoIndice, (rrnAtual + 1) * 205, SEEK_SET);
-    
+
     char busca[55];
     strcpy(busca, aInserir->tecOrigem.nomeString);
     strcat(busca, aInserir->tecDestino.nomeString);
-
 
     No no;
     lerNo(&no, arquivoIndice);
@@ -122,46 +138,53 @@ int inserirNo(Dados *aInserir, int rrnAtual, FILE *arquivoIndice){
     for (int i = 0; i <= 3; i++)
     {
         int resultado = strcmp(busca, no.C[i]);
-        
-        if(i == 3){
+
+        if (i == 3)
+        {
             if (no.P[i] != -1)
             {
                 return encontrarRRNRec(busca, no.P[i], arquivoIndice);
             }
-            else{
+            else
+            {
                 return -1;
             }
         }
-        if (resultado < 0 || no.C[i][0] == '\0'){
-            //busca é menor que c[i], logo deve estar à esquerda
+        if (resultado < 0 || no.C[i][0] == '\0')
+        {
+            // busca é menor que c[i], logo deve estar à esquerda
             if (no.P[i] != -1)
             {
                 return encontrarRRNRec(busca, no.P[i], arquivoIndice);
             }
-            else{
+            else
+            {
                 return -1;
             }
-        } else if (resultado == 0)
+        }
+        else if (resultado == 0)
         {
-            //busca é igual à c[i], retornar a referência
+            // busca é igual à c[i], retornar a referência
             return no.Pr[i];
         }
     }
-     if (no.P[no.nroChavesNo] != -1) {
+    if (no.P[no.nroChavesNo] != -1)
+    {
         return encontrarRRNRec(busca, no.P[no.nroChavesNo], arquivoIndice);
-    } else {
+    }
+    else
+    {
         // Se não houver último filho, a busca não foi encontrada
         return -1;
     }
-
 }
-int inserirNoRec(Dados *aInserir, int rrnDaRaiz, FILE *arquivoIndice){
-    
+int inserirNoRec(Dados *aInserir, int rrnDaRaiz, FILE *arquivoIndice)
+{
 }
 
 /*
 void inserirNoNó(No no){
-    /*short naoAchouAPosicao; 
+    /*short naoAchouAPosicao;
     int k;
     k = no.nroChavesNo;
     naoAchouAPosicao = k > 0;
@@ -179,8 +202,8 @@ void inserirNoNó(No no){
     }
     no.P[k] = no;
     no.C[k+1] = apDir;
-    no.nroChavesNo++; 
-    
+    no.nroChavesNo++;
+
 }
 
 // Função para inserir um registro na árvore-B
@@ -225,7 +248,7 @@ void inserirNaArvoreB(FILE *arquivoIndice, DadosArvoreB *registro, CabecalhoArvo
         *regRetorno = ap->r[m];
         *apRetorno = apTemp;
     }
-    
+
 }
 
 void insere(Registro Reg, Apontador ap){
@@ -242,6 +265,6 @@ void insere(Registro Reg, Apontador ap){
         apTemp->p[0] - *ap;
         *ap = apTemp;
     }
-    
+
 }
 */

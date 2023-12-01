@@ -220,7 +220,15 @@ void func4(FILE *saida, int rrn)
 void func5(FILE *entrada, FILE *saida)
 {
     Dados out;
-    /*
+    cabecalhoArvore cabecalho;
+
+    lerCabecalho(&cabecalho, entrada);
+    if (cabecalho.status != '1')
+    {
+        printf("Falha no processamento do arquivo.\n");
+        return;
+    }
+    /*func5
     while (fread(&out.removido, sizeof(char), 1, entrada)){
         if(out.removido == '0'){
             inserirNoNó();
@@ -241,17 +249,20 @@ int func6(FILE *arquivoDados, FILE *arquivoIndice, char *busca)
 
     cabecalhoArvore cabecalho;
 
+
     lerCabecalho(&cabecalho, arquivoIndice);
-    if (cabecalho.status == '0')
+    //Verifica se algo foi lido no cabeçalho/se ele está consistente
+    if (cabecalho.status != '1')
     {
         printf("Falha no processamento do arquivo.\n");
         return -1;
     }
 
+    // variável que recebe o valor do rrn buscado de acordo com a chave (busca) passada
     int rrnBuscado = encontrarRRN(busca, cabecalho.noRaiz, arquivoIndice);
     if (rrnBuscado == -1)
-    {
-        printf("Registro inexistente.\n");
+    {   
+        printf("Registro inexistente.\n");      //nao foi encontrado
     }
     else
     {
@@ -268,7 +279,7 @@ int func7(FILE *arquivoDados, FILE *arquivoIndice, int n)
     char nulo[4] = "NULO";
 
     lerCabecalho(&cabecalho, arquivoIndice);
-    if (cabecalho.status == '0')
+    if (cabecalho.status != '1')
     {
         printf("Falha no processamento do arquivo.\n");
         return -1;

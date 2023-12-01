@@ -130,7 +130,7 @@ int main()
         fseek(arqDados1, 0, SEEK_SET);
         fread(&header5.status, sizeof(char), 1, arqDados1);
 
-        if (arqDados1 == NULL || arqIndice1 == NULL || header5.status == '0')
+        if (arqDados1 == NULL || arqIndice1 == NULL || header5.status != '1')
         {
             printf("Falha no processamento do arquivo.\n");
             break;
@@ -149,13 +149,16 @@ int main()
         char campo1[55];
         char busca1[55];
 
+
+        //abre os arquivos e verifica se está consistente. A leitura do cabeçalho do arq de indices é feita dentro da funcionalidade, pois ele é reutilizado naquele escopo.
         FILE *arqDados = fopen(arquivoDados, "rb");
         FILE *arqIndice = fopen(arquivoIndice, "rb");
         Header header6;
+
         fseek(arqDados, 0, SEEK_SET);
         fread(&header6.status, sizeof(char), 1, arqDados);
 
-        if (arqDados == NULL || arqIndice == NULL || header6.status == '0')
+        if (arqDados == NULL || arqIndice == NULL || header6.status != '1')
         {
             printf("Falha no processamento do arquivo.\n");
             break;
@@ -163,10 +166,12 @@ int main()
 
         fseek(arqDados, 13, SEEK_SET);
 
+        //para n leituras, n buscas
         for (int i = 0; i < n; i++)
         {
             scanf("%s", campo1);
 
+            //verifica qual busca será realizada, utilizando as funcionalidades 3 ou 6.
             if (strcmp(campo1, "nomeTecnologiaOrigem") == 0 || strcmp(campo1, "nomeTecnologiaDestino") == 0)
             {
                 scan_quote_string(busca1);
@@ -207,7 +212,7 @@ int main()
         Header header7;
 
         fread(&header7.status, sizeof(char), 1, arqDados7);
-        if (arqDados7 == NULL || arqIndices7 == NULL || header7.status == '0')
+        if (arqDados7 == NULL || arqIndices7 == NULL || header7.status != '1')
         {
             printf("Falha no processamento do arquivo.\n");
             break;
