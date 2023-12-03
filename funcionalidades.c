@@ -6,8 +6,8 @@
 #include "funcoesFornecidas.h"
 #include "btree.h"
 #include "indices.h"
-void func1(FILE *entrada, FILE *saida)
-{
+
+void func1(FILE *entrada, FILE *saida){
     Header header;
     Tecnologia tecTotal[500];
     Tecnologia tecPar[500];
@@ -219,29 +219,76 @@ void func4(FILE *saida, int rrn)
 
 void func5(FILE *entrada, FILE *saida)
 {
-    Dados out;
-    cabecalhoArvore cabecalho;
 
+    /*
+     *   Inicialização bem semelhante as outras funcionalidades
+     *   Abre o arquivo binário, lê o cabeçario para posicionar devidamente a cabeça leitora para o primeiro RRN
+    */
+    if (entrada == NULL || saida == NULL)
+    {
+        printf("Falha no processamento do arquivo.\n");
+        return; // Caso o bin não seja encontrado ou o bin_index não criado
+    }
+
+    //  inicializa o cabeçalho
+    cabecalhoArvore cabecalho;
     lerCabecalho(&cabecalho, entrada);
     if (cabecalho.status != '1')
     {
         printf("Falha no processamento do arquivo.\n");
+        fclose(entrada);
         return;
     }
-    /*func5
-    while (fread(&out.removido, sizeof(char), 1, entrada)){
-        if(out.removido == '0'){
-            inserirNoNó();
-            inserirNaArvoreB();
+
+    //  inicializa o cabeçalho do arquivo de indice
+
+    inicializarHeader(saida);
+    inserePrimeiraRaiz(saida);
+
+    Dados dados;
+    int encontrado = 0;                  // para testar registro inexistente
+    int NoMaisAlto = 0;                 // Valor da atual altura maxima da arvore
+    int RRNNoINdice = 0;                // Contador para os nós inseridos
+    int RRNReferencia = 0;                // Contador para os nós inseridos
+    fseek(entrada, TAM_CABECALHO, SEEK_SET); //  Para pular o cabeçalho
+    int counter = 0;
+    // le tudo do registro desejado a seguir
+    while (fread(&dados.removido, sizeof(char), 1, entrada))
+    {
+
+        if (dados.removido == '0')
+        {
+            counter++;
+            // printf("inter:%d", counter);
+            lerRegistro(entrada, &dados);
+            // printa_registro(&dados); //  Utiliza a função já previamente criada na funcionalidade 3 para printar n tela o devido registro
+            insereNoIndice(saida, &dados, &NoMaisAlto, &RRNNoINdice, RRNReferencia);
+            No *raiz = criarNo();
+            raiz = resgatarRaiz(saida, raiz);
+            RRNReferencia++; //  Contador do registros de leitura do arquivo arquivoário
+            encontrado = 1; //  Caso encontre, pelo menos uma vez
+            if (NoMaisAlto < alturaArvore(saida, raiz)){
+                NoMaisAlto = alturaArvore(saida, raiz);
+            }
+            free(dados.tecOrigem.nomeString); //  Libera as nomeStrings variaveis
+            free(dados.tecDestino.nomeString);
+        }
+        else if (dados.removido == '1')
+        {
+            fseek(entrada, TAM_REGISTRO - 1, SEEK_CUR); // Pula o registro removido            }
         }
     }
-    */
-
+    // atualizaHeader(saida, '1', -1, &RRNNoINdice);
+    if (!encontrado)
+    { // registro inexistente
+        printf("Falha no processamento do arquivo.\n");
+    }
+    atualizaHeader(saida, '1', -1, &RRNNoINdice);
+    No *raiz = criarNo();
+    raiz = resgatarRaiz(saida, raiz);
     fclose(entrada);
     fclose(saida);
-    // fecharArquivo(saida, &header);
-    // header.status = '1';
-    return;
+    binarioNaTela(saida);
 }
 
 int func6(FILE *arquivoDados, FILE *arquivoIndice, char *busca)
