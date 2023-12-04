@@ -33,28 +33,28 @@ void lerCabecalho(cabecalhoArvore *cabecalhoArvore, FILE *arquivoIndice);
 void lerNo(No *no, FILE *arquivoIndice);
 int encontrarRRNRec(char *busca, int rrnDaRaiz, FILE *arquivoIndice);
 int encontrarRRN(char *busca, int rrnDaRaiz, FILE *arquivoIndice);
-static int estaDisponivel(No *no)
-static void insereNo(No *no, char *aux, int RRNReferencia, int lugar)
-static void inserirNoLugar(No *no, char *aux, int RRNReferencia, int lugar)
-static void mudaPonteiro(No *dadoNo, No *novoDireito, int lugar)
-static void mudaPonteiroSplit(No *noEsquerdo, No *inferiorDireito, No *superiorDireito, int *pointers, int lugar)
-char **promoverVetor(No *no, char **vetor, char *aux)
-int ondeInserir(No *no, char *aux)
-void atualizarArquivo(FILE *arquivoIndice, No *no, int RRNLugar)
-int *prVetor(No *noFilho, int *prPromovido, char *aux, int RRNReferencia)
-static No *dividirNo(FILE *arquivoIndice, No *noFilho, No *novoDireito, char *aux, int RRNReferencia)
-int *promoverPonteiros(No *no, int ponteiros[])
-int eRaiz(FILE *arquivoIndice, No *raiz, int *NoMaisAlto)
-No *lerRegistroIndice(FILE *arquivoIndice, No *prNo, int RRN)
-int alturaArvore(FILE *arquivoIndice, No *no)
-No *resgatarRaiz(FILE *arquivoIndice, No *raiz)
-No *splitIntermediario(FILE *arquivoIndice, No *raiz, No *promovidoNoDireito, char **promovido, int *prPromovido, char *aux, int RRNReferencia, int *RRNNoINdice)
-void atualizaHeader(FILE *arquivoIndice, char status, int RRNNoRaiz, int *RRNNoINdice)
-No *insereLocal(FILE *arquivoIndice, No *raiz, char **promovido, char *aux, int RRNReferencia, int *RRNNoINdice, int *NoMaisAlto)
-void novaRaizSplit(FILE *arquivoIndice, No *raiz, No *promovidoNoDireito, char **promovido, int *prPromovido, char *aux, int RRNReferencia, int *RRNNoINdice)
-No *inserirStringIndice(FILE *arquivoIndice, int no_inIndex, char *aux, int *NoMaisAlto, int *RRNNoINdice, int RRNReferencia)
-void inserePrimeiraRaiz(FILE *arquivoIndice)
-void insereNoIndice(FILE *arquivoIndice, Dados *dados, int *NoMaisAlto, int *RRNNoINdice, int RRNReferencia)
+static int estaDisponivel(No *no);
+static void insereNo(No *no, char *aux, int RRNReferencia, int lugar);
+static void inserirNoLugar(No *no, char *aux, int RRNReferencia, int lugar);
+static void mudaPonteiro(No *dadoNo, No *novoDireito, int lugar);
+static void mudaPonteiroSplit(No *noEsquerdo, No *inferiorDireito, No *superiorDireito, int *pointers, int lugar);
+char **promoverVetor(No *no, char **vetor, char *aux);
+int ondeInserir(No *no, char *aux);
+void atualizarArquivo(FILE *arquivoIndice, No *no, int RRNLugar);
+int *prVetor(No *noFilho, int *prPromovido, char *aux, int RRNReferencia);
+static No *dividirNo(FILE *arquivoIndice, No *noFilho, No *novoDireito, char *aux, int RRNReferencia);
+int *promoverPonteiros(No *no, int ponteiros[]);
+int eRaiz(FILE *arquivoIndice, No *raiz, int *NoMaisAlto);
+No *lerRegistroIndice(FILE *arquivoIndice, No *prNo, int RRN);
+int alturaArvore(FILE *arquivoIndice, No *no);
+No *resgatarRaiz(FILE *arquivoIndice, No *raiz);
+No *splitIntermediario(FILE *arquivoIndice, No *raiz, No *promovidoNoDireito, char **promovido, int *prPromovido, char *aux, int RRNReferencia, int *RRNNoINdice);
+void atualizaHeader(FILE *arquivoIndice, char status, int RRNNoRaiz, int *RRNNoINdice);
+No *insereLocal(FILE *arquivoIndice, No *raiz, char **promovido, char *aux, int RRNReferencia, int *RRNNoINdice, int *NoMaisAlto);
+void novaRaizSplit(FILE *arquivoIndice, No *raiz, No *promovidoNoDireito, char **promovido, int *prPromovido, char *aux, int RRNReferencia, int *RRNNoINdice);
+No *inserirStringIndice(FILE *arquivoIndice, int no_inIndex, char *aux, int *NoMaisAlto, int *RRNNoINdice, int RRNReferencia);
+void inserePrimeiraRaiz(FILE *arquivoIndice);
+void insereNoIndice(FILE *arquivoIndice, Dados *dados, int *NoMaisAlto, int *RRNNoINdice, int RRNReferencia);
 
 
 #endif
