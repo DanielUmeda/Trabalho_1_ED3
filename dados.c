@@ -177,7 +177,7 @@ void imprimirRegistrosNaTela(Dados *registro) {
 
 }
 
-void preencherLixo(FILE *arquivo, Dados *registro, int tamRealRegistro) {
+void preencherLixo(FILE *arquivo, int tamRealRegistro) {
 
     int tamPreencher = TAM_REGISTRO - tamRealRegistro;
     //enquanto i for menor que o tamanho não preenchido do registro, insere-se 1 '$'
@@ -216,23 +216,7 @@ void escreverRegistro(FILE *arquivo, Dados *registro, Header *header, Tecnologia
     fwrite(registro->tecDestino.nomeString, sizeof(char), tamDestino, arquivo);
 
     //Com o registro todo preenchido, devemos preencher o restante com $, até que os 76 bytes sejam utilizados
-    preencherLixo(arquivo, registro, tamanhoRealRegistro);
+    preencherLixo(arquivo, tamanhoRealRegistro);
 }
-
-// Função para inserir um registro na árvore-B
-void inserirNaArvoreB(FILE *arquivoIndice, DadosArvoreB *registro, CabecalhoArvoreB *cabecalho) {
-    // Implementação da lógica de inserção na árvore-B
-}
-
-// Função para buscar um registro na árvore-B
-void buscarNaArvoreB(FILE *arquivoIndice, char *chave, DadosArvoreB *resultado, CabecalhoArvoreB *cabecalho) {
-    // Implementação da lógica de busca na árvore-B
-}
-
-// Função para atualizar o cabeçalho da árvore-B
-void atualizarCabecalhoArvoreB(FILE *arquivoIndice, CabecalhoArvoreB *cabecalho) {
-    // Implementação da atualização do cabeçalho
-}
-
 
 
